@@ -17,7 +17,7 @@ class Maqola(models.Model):
         ('matn_lingvistikasi', 'Matn lingvistikasi'),
         ('alisher_navoiy', 'Alisher Navoiy ijodi'),
         ('fonetika', 'Fonetika va fonologiya'),
-        ('sadriddin_ayniy', 'Sadriddin Ayniy bilan bog\'liq maqolalar'),
+        ('sadriddin_ayniy', 'Sadriddin Ayniy maqolalari'),
         ('leksikologiya', 'Leksikologiya'),
         ('ustoz_haqida', 'Ustoz haqida (maxsus)'),
     ]

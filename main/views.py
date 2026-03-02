@@ -553,18 +553,21 @@ def statistika(request):
     kitob_authors = set([k.author for k in kitoblar if k.author])
     total_authors = len(maqola_authors | kitob_authors)
     
-    # Kategoriya bo'yicha (Maqolalar)
+    # Kategoriya bo'yicha (Maqolalar + Kitoblar)
     categories = []
     for choice in Maqola.CATEGORY_CHOICES:
-        cat_maqolalar = maqolalar.filter(category=choice[0])
-        cat_count = cat_maqolalar.aggregate(Sum('total_words'))['total_words__sum'] or 0
-        if cat_count > 0:
-            percent = int((cat_count / total_words * 100)) if total_words > 0 else 0
-            categories.append({
-                'name': choice[1],
-                'count': cat_count,
-                'percent': percent
-            })
+        if choice[0] != 'ustoz_haqida':  # Ustoz haqida kategoriyasini chiqarib tashlash
+            cat_maqolalar = maqolalar.filter(category=choice[0])
+            cat_count = cat_maqolalar.aggregate(Sum('total_words'))['total_words__sum'] or 0
+            
+            # Kitoblar uchun kategoriya yo'q, lekin umumiy statistikaga qo'shamiz
+            if cat_count > 0:
+                percent = int((cat_count / total_words * 100)) if total_words > 0 else 0
+                categories.append({
+                    'name': choice[1],
+                    'count': cat_count,
+                    'percent': percent
+                })
     
     # Yil bo'yicha
     year_ranges = [

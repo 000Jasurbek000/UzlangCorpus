@@ -481,7 +481,7 @@
                 {% for genre in categories %}
                 <div class="genre-item" style="animation: fadeIn 0.6s ease {{ forloop.counter|add:'-1'|floatformat:1 }}s both">
                     <div class="genre-header">
-                        <span class="genre-name">{{ genre.name }}</span>
+                        <span class="genre-name">{{ genre.name|safe }}</span>
                         <span class="genre-count" title="{{ genre.count|intcomma }} so'z">{{ genre.count|shorten_number }} so'z</span>
                     </div>
                     <div class="genre-bar">
@@ -550,7 +550,7 @@
     const genrePieCtx = document.getElementById('genrePieChart');
     if (genrePieCtx) {
         const genreData = {
-            labels: [{% for genre in categories %}'{{ genre.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            labels: [{% for genre in categories %}'{{ genre.name|safe }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
             datasets: [{
                 data: [{% for genre in categories %}{{ genre.percent }}{% if not forloop.last %}, {% endif %}{% endfor %}],
                 backgroundColor: gradientColors.slice(0, {{ categories|length }}),
@@ -569,10 +569,13 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                            padding: 15,
+                            padding: 20,
                             font: {
-                                size: 12
-                            }
+                                size: 11
+                            },
+                            usePointStyle: true,
+                            boxWidth: 12,
+                            maxWidth: 200
                         }
                     },
                     tooltip: {
@@ -635,7 +638,7 @@
     const genresHorizontalBarCtx = document.getElementById('genresHorizontalBar');
     if (genresHorizontalBarCtx) {
         const genresHBarData = {
-            labels: [{% for genre in categories %}'{{ genre.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            labels: [{% for genre in categories %}'{{ genre.name|safe }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
             datasets: [{
                 label: "So'zlar soni",
                 data: [{% for genre in categories %}{{ genre.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],

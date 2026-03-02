@@ -1,0 +1,784 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Videomateriallar | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+.videos-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    padding: 80px 0;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.videos-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+}
+
+.videos-hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.videos-hero p {
+    font-size: 20px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.videos-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%);
+}
+
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.video-box {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(45, 95, 127, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.video-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(45, 95, 127, 0.2);
+}
+
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.video-box:hover .video-thumbnail img {
+    transform: scale(1.1);
+}
+
+.video-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.video-box:hover .video-play-icon {
+    background: var(--turquoise);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-play-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: var(--navy);
+    margin-left: 4px;
+}
+
+.video-box:hover .video-play-icon svg {
+    fill: white;
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.video-info {
+    padding: 25px;
+}
+
+.video-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-description {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #666;
+}
+
+.video-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.video-views {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Video Modal */
+.video-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.video-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 25px;
+    max-width: 1100px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.modal-close:hover {
+    background: var(--navy);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.modal-video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    background: #000;
+}
+
+.modal-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-info {
+    padding: 40px;
+}
+
+.modal-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+}
+
+.modal-description {
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.modal-meta {
+    display: flex;
+    gap: 30px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid var(--cream);
+}
+
+.modal-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    padding: 12px 30px;
+    background: white;
+    border: 2px solid var(--turquoise);
+    color: var(--navy);
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-tab:hover,
+.filter-tab.active {
+    background: var(--turquoise);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+}
+
+/* Photo Gallery Styles */
+.photo-gallery-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-tabs {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.section-tab {
+    padding: 15px 40px;
+    background: white;
+    border: 3px solid var(--navy);
+    color: var(--navy);
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.section-tab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.section-tab.active {
+    background: var(--navy);
+    color: white;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(45, 95, 127, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.photo-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(45, 95, 127, 0.2);
+}
+
+.photo-image {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+}
+
+.photo-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.photo-card:hover .photo-image img {
+    transform: scale(1.15);
+}
+
+.photo-date-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--navy);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.photo-content {
+    padding: 25px;
+}
+
+.photo-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.photo-description {
+    color: var(--text-dark);
+    line-height: 1.7;
+    font-size: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Photo Modal */
+.photo-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.photo-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.photo-modal-content {
+    background: white;
+    border-radius: 25px;
+    max-width: 1000px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.photo-modal-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.photo-modal-info {
+    padding: 40px;
+}
+
+.photo-modal-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 15px;
+}
+
+.photo-modal-date {
+    color: var(--turquoise);
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.photo-modal-description {
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .videos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .photos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .videos-hero h1 {
+        font-size: 32px;
+    }
+    
+    .section-tabs {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .section-tab {
+        width: 100%;
+    }
+    
+    .modal-info {
+        padding: 25px;
+    }
+    
+    .modal-title {
+        font-size: 24px;
+    }
+    
+    .photo-modal-image {
+        height: 300px;
+    }
+    
+    .photo-modal-info {
+        padding: 25px;
+    }
+    
+    .photo-modal-title {
+        font-size: 24px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Videos Hero -->
+    <section class="videos-hero">
+        <div class="container">
+            <h1>📹 Multimedia manbalari</h1>
+            <p>Video materiallar va fotogalereya</p>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <section class="videos-section">
+        <div class="container">
+            <!-- Section Tabs -->
+            <div class="section-tabs">
+                <button class="section-tab active" data-section="videos">
+                    📹 Video materiallar
+                </button>
+                <button class="section-tab" data-section="photos">
+                    📸 Fotogalereya
+                </button>
+            </div>
+
+            <!-- Videos Content -->
+            <div id="videos-content" class="content-section active">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-category="all">Barchasi</button>
+                <button class="filter-tab" data-category="lectures">Ma'ruzalar</button>
+                <button class="filter-tab" data-category="lessons">Darsliklar</button>
+                <button class="filter-tab" data-category="interviews">Suhbatlar</button>
+            </div>
+
+            <div class="videos-grid" id="videosGrid">
+                {% if videos %}
+                    {% for video in videos %}
+                    <a href="{% url 'main:video_detail' video.id %}" class="video-box" data-category="{{ video.category }}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="video-thumbnail">
+                            <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}">
+                            <div class="video-play-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">{{ video.title }}</h3>
+                            <p class="video-description">{{ video.description|truncatewords:15 }}</p>
+                            <!-- Video URL Debug: {{ video.youtube_url }} -->
+                            <div class="video-meta">
+                                <span class="video-date">
+                                    📅 {{ video.published_date|date:"d.m.Y" }}
+                                </span>
+                                <span class="video-views">
+                                    👁 {{ video.views }} ko'rishlar
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <p style="font-size: 18px; color: #666;">Hozircha videolar yo'q</p>
+                    </div>
+                {% endif %}
+            </div>
+            </div>
+
+            <!-- Photos Content -->
+            <div id="photos-content" class="content-section">
+                <div class="photos-grid">
+                    {% if photos %}
+                        {% for photo in photos %}
+                        <div class="photo-card" data-photo-id="{{ photo.id }}">
+                            <div class="photo-image">
+                                <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                                <div class="photo-date-badge">
+                                    📅 {{ photo.date|date:"d.m.Y" }}
+                                </div>
+                            </div>
+                            <div class="photo-content">
+                                <h3 class="photo-title">{{ photo.title }}</h3>
+                                <p class="photo-description">{{ photo.description|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                            <p style="font-size: 18px; color: #666;">Hozircha fotolar yo'q</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeVideoModal()">✕</button>
+            <div class="modal-video-container" id="videoContainer"></div>
+            <div class="modal-info">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-description" id="modalDescription"></p>
+                <div class="modal-meta">
+                    <span class="modal-meta-item" id="modalDate"></span>
+                    <span class="modal-meta-item" id="modalViews"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div class="photo-modal" id="photoModal">
+        <div class="photo-modal-content">
+            <button class="modal-close" onclick="closePhotoModal()">✕</button>
+            <img id="photoModalImage" class="photo-modal-image" src="" alt="">
+            <div class="photo-modal-info">
+                <h2 class="photo-modal-title" id="photoModalTitle"></h2>
+                <p class="photo-modal-date" id="photoModalDate"></p>
+                <p class="photo-modal-description" id="photoModalDescription"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Section tabs functionality
+        const sectionTabs = document.querySelectorAll('.section-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        sectionTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const section = tab.dataset.section;
+                
+                sectionTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                contentSections.forEach(content => {
+                    if (content.id === section + '-content') {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const videoBoxes = document.querySelectorAll('.video-box');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.dataset.category;
+                
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                videoBoxes.forEach(box => {
+                    if (category === 'all' || box.dataset.category === category) {
+                        box.style.display = 'block';
+                        box.style.animation = 'fadeIn 0.5s ease';
+                    } else {
+                        box.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Video boxes now link to detail pages, no modal needed
+        
+        // Close modal on background click
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                closeVideoModal();
+            }
+            if (e.key === 'Escape' && photoModal.classList.contains('active')) {
+                closePhotoModal();
+            }
+        });
+
+        // Photo gallery functionality
+        const photoCards = document.querySelectorAll('.photo-card');
+        const photoModal = document.getElementById('photoModal');
+        
+        const photosData = {
+            {% for photo in photos %}
+            {{ photo.id }}: {
+                title: '{{ photo.title|escapejs }}',
+                image: '{{ photo.image.url }}',
+                date: '{{ photo.date|date:"d.m.Y" }}',
+                description: '{{ photo.description|escapejs }}'
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+
+        photoCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const photoId = card.dataset.photoId;
+                const photo = photosData[photoId];
+                
+                document.getElementById('photoModalTitle').textContent = photo.title;
+                document.getElementById('photoModalImage').src = photo.image;
+                document.getElementById('photoModalImage').alt = photo.title;
+                document.getElementById('photoModalDate').innerHTML = '📅 ' + photo.date;
+                document.getElementById('photoModalDescription').textContent = photo.description;
+                
+                photoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closePhotoModal() {
+            photoModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close photo modal on background click
+        photoModal.addEventListener('click', (e) => {
+            if (e.target === photoModal) {
+                closePhotoModal();
+            }
+        });
+    </script>
+{% endblock %}

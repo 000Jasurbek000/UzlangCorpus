@@ -1,0 +1,785 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Xotiralar | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section */
+.memories-hero {
+    background: linear-gradient(135deg, rgba(101, 67, 33, 0.95) 0%, rgba(139, 90, 43, 0.9) 100%), 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f4e4c1' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    padding: 100px 0 80px;
+    text-align: center;
+    color: #f4e4c1;
+    position: relative;
+    overflow: hidden;
+}
+
+.memories-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.memories-hero h1 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-serif);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+}
+
+.memories-hero p {
+    font-size: 22px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+}
+
+.memories-stats {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+}
+
+.stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* Timeline Section */
+.timeline-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 42px;
+    color: var(--navy);
+    margin-bottom: 15px;
+    font-family: var(--font-serif);
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+}
+
+.section-header p {
+    color: #666;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.timeline {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--gold), var(--turquoise));
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 60px;
+    animation: fadeIn 0.6s ease;
+}
+
+.timeline-item:nth-child(odd) {
+    padding-right: 50%;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    padding-left: 50%;
+    text-align: left;
+}
+
+.timeline-dot {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--gold);
+    border: 4px solid white;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+    z-index: 2;
+}
+
+.timeline-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.timeline-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    transform: translateY(-3px);
+}
+
+.timeline-year {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.timeline-title {
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.timeline-location {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.timeline-item:nth-child(odd) .timeline-location {
+    justify-content: flex-end;
+}
+
+.timeline-text {
+    color: #666;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* Memory Cards Layout */
+.memories-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 40px 0;
+}
+
+.memory-card {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 50px;
+    background: white;
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 50px rgba(45, 95, 127, 0.1);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+}
+
+.memory-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(45, 95, 127, 0.15);
+    border-color: var(--turquoise);
+}
+
+/* Right Image Layout (toq raqamli kartalar) */
+.memory-card.right-image {
+    grid-template-columns: 1fr 400px;
+}
+
+.memory-card.right-image .memory-image-section {
+    order: 2;
+}
+
+.memory-card.right-image .memory-content-section {
+    order: 1;
+}
+
+/* Image Section */
+.memory-image-section {
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(45, 95, 127, 0.2);
+}
+
+.memory-main-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.memory-card:hover .memory-main-image {
+    transform: scale(1.05);
+}
+
+.memory-year-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Content Section */
+.memory-content-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.memory-meta-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.memory-date,
+.memory-location {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.meta-icon {
+    width: 20px;
+    height: 20px;
+    fill: var(--turquoise);
+    flex-shrink: 0;
+}
+
+.memory-main-title {
+    font-size: 32px;
+    color: var(--navy);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.memory-description {
+    font-size: 18px;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.memory-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.memory-tag {
+    background: linear-gradient(135deg, var(--turquoise) 0%, var(--emerald) 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.read-more-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--turquoise);
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.read-more-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--turquoise);
+    transition: transform 0.3s ease;
+}
+
+.memory-card:hover .read-more-btn svg {
+    transform: translateX(5px);
+}
+
+/* Responsive for Memory Cards */
+@media (max-width: 768px) {
+    .memory-card,
+    .memory-card.right-image {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 25px;
+    }
+    
+    .memory-card.right-image .memory-image-section,
+    .memory-card.right-image .memory-content-section {
+        order: initial;
+    }
+    
+    .memory-main-image {
+        height: 250px;
+    }
+    
+    .memory-main-title {
+        font-size: 24px;
+    }
+    
+    .memory-meta-row {
+        gap: 20px;
+    }
+    
+    .memories-list {
+        gap: 40px;
+        padding: 20px;
+    }
+}
+
+/* Memory Modal */
+.memory-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.memory-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 25px;
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 24px;
+    color: var(--navy);
+}
+
+.modal-close:hover {
+    background: var(--navy);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.modal-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    filter: sepia(15%);
+}
+
+.modal-body {
+    padding: 45px;
+}
+
+.modal-meta {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.modal-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 15px;
+}
+
+.modal-meta-item strong {
+    color: var(--gold);
+}
+
+.modal-title {
+    font-size: 36px;
+    color: var(--navy);
+    margin-bottom: 25px;
+    font-family: var(--font-serif);
+    line-height: 1.3;
+}
+
+.modal-text {
+    color: #444;
+    line-height: 2;
+    font-size: 17px;
+    text-align: justify;
+}
+
+.modal-tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: var(--cream);
+    color: var(--navy);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .memories-hero h1 {
+        font-size: 36px;
+    }
+    
+    .memories-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline::before {
+        left: 20px;
+    }
+    
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        padding-left: 60px;
+        padding-right: 0;
+        text-align: left;
+    }
+    
+    .timeline-dot {
+        left: 20px;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-location {
+        justify-content: flex-start;
+    }
+    
+    .modal-body {
+        padding: 30px;
+    }
+    
+    .modal-title {
+        font-size: 28px;
+    }
+    
+    .modal-image {
+        height: 250px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="memories-hero">
+        <div class="container">
+            <h1>📖 Hayotdan lavhalar</h1>
+            <p>60 yillik ilmiy yo'l xotiralari</p>
+            
+            <div class="memories-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ xotiralar|length }}</span>
+                    <span class="stat-label">Xotira</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">40+</span>
+                    <span class="stat-label">Yil</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Mamlakat</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories List Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Barcha xotiralar</h2>
+                <p>Har bir xotira bu oltindan qimmatlidir!</p>
+            </div>
+            
+            <div class="memories-list">
+                {% for xotira in xotiralar %}
+                <div class="memory-card {% cycle 'left-image' 'right-image' %}" onclick="window.location.href='/xotiralar/{{ xotira.id }}/'" style="cursor: pointer;">
+                    <!-- Image Section -->
+                    <div class="memory-image-section">
+                        {% if xotira.image %}
+                        <img src="{{ xotira.image.url }}" alt="{{ xotira.title }}" class="memory-main-image">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&h=400&fit=crop" alt="{{ xotira.title }}" class="memory-main-image">
+                        {% endif %}
+                        <div class="memory-year-badge">{{ xotira.year }}</div>
+                    </div>
+                    
+                    <!-- Content Section -->
+                    <div class="memory-content-section">
+                        <div class="memory-meta-row">
+                            <div class="memory-date">
+                                <svg viewBox="0 0 24 24" class="meta-icon">
+                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                </svg>
+                                {{ xotira.date }}
+                            </div>
+                            <div class="memory-location">
+                                <svg viewBox="0 0 24 24" class="meta-icon">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                {{ xotira.location }}
+                            </div>
+                        </div>
+                        
+                        <h3 class="memory-main-title">{{ xotira.title }}</h3>
+                        <p class="memory-description">{{ xotira.short_text }}</p>
+                        
+                        {% if xotira.tag_list %}
+                        <div class="memory-tags-list">
+                            {% for tag in xotira.tag_list|slice:":4" %}
+                            <span class="memory-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="read-more-btn">
+                            <span>Batafsil o'qish</span>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Modal -->
+    <div class="memory-modal" id="memoryModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMemoryModal()">×</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <div class="modal-meta-item">
+                        <strong>📅</strong> <span id="modalDate"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <strong>📍</strong> <span id="modalLocation"></span>
+                    </div>
+                </div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-text" id="modalText"></p>
+                <div class="modal-tags" id="modalTags"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Memories data
+        const memoriesData = {
+            {% for memory in memories %}
+            {{ memory.id }}: {
+                title: '{{ memory.title|escapejs }}',
+                date: '{{ memory.date }}',
+                location: '{{ memory.location|escapejs }}',
+                image: '{{ memory.image }}',
+                full_text: '{{ memory.full_text|escapejs }}',
+                tags: {{ memory.tags|safe }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.dataset.category;
+                
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                timelineItems.forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeIn 0.6s ease';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        const memoryModal = document.getElementById('memoryModal');
+        const allMemoryCards = document.querySelectorAll('[data-memory-id]');
+
+        allMemoryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const memoryId = card.dataset.memoryId;
+                const memory = memoriesData[memoryId];
+                
+                document.getElementById('modalTitle').textContent = memory.title;
+                document.getElementById('modalDate').textContent = memory.date;
+                document.getElementById('modalLocation').textContent = memory.location;
+                document.getElementById('modalImage').src = memory.image;
+                document.getElementById('modalImage').alt = memory.title;
+                document.getElementById('modalText').textContent = memory.full_text;
+                
+                // Tags
+                const tagsContainer = document.getElementById('modalTags');
+                tagsContainer.innerHTML = '';
+                memory.tags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.className = 'tag';
+                    tagElement.textContent = tag;
+                    tagsContainer.appendChild(tagElement);
+                });
+                
+                memoryModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeMemoryModal() {
+            memoryModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on background click
+        memoryModal.addEventListener('click', (e) => {
+            if (e.target === memoryModal) {
+                closeMemoryModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && memoryModal.classList.contains('active')) {
+                closeMemoryModal();
+            }
+        });
+    </script>
+{% endblock %}

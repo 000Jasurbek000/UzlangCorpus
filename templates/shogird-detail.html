@@ -1,0 +1,517 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ shogird.full_name }} - Ilmiy ish | O'zbek Tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+.detail-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    padding: 60px 0 40px;
+    color: white;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: white;
+}
+
+.breadcrumb span {
+    color: rgba(255,255,255,0.5);
+}
+
+.detail-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.detail-author {
+    font-size: 22px;
+    opacity: 0.95;
+}
+
+.detail-content {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--paper) 0%, var(--cream) 100%);
+}
+
+.info-card {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    box-shadow: 0 10px 50px rgba(45, 95, 127, 0.12);
+    margin-bottom: 40px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.info-item {
+    display: flex;
+    gap: 20px;
+    padding: 25px;
+    background: linear-gradient(135deg, var(--cream) 0%, #fff 100%);
+    border-radius: 20px;
+    border-left: 4px solid var(--turquoise);
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(64, 224, 208, 0.2);
+}
+
+.info-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--turquoise) 0%, var(--emerald) 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+}
+
+.info-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+.info-details h3 {
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-details p {
+    font-size: 18px;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.info-item-full {
+    grid-column: 1 / -1;
+}
+
+.document-section {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    box-shadow: 0 10px 50px rgba(45, 95, 127, 0.12);
+    text-align: center;
+}
+
+.document-title {
+    font-size: 32px;
+    color: var(--navy);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.document-description {
+    font-size: 18px;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.document-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px;
+    background: linear-gradient(135deg, rgba(64, 224, 208, 0.1) 0%, rgba(80, 200, 120, 0.1) 100%);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document-icon svg {
+    width: 70px;
+    height: 70px;
+    fill: var(--turquoise);
+}
+
+.btn-view-document {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 50px;
+    background: linear-gradient(135deg, var(--turquoise) 0%, var(--emerald) 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(64, 224, 208, 0.4);
+}
+
+.btn-view-document:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(64, 224, 208, 0.5);
+}
+
+.btn-view-document svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    background: white;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.btn-back:hover {
+    background: var(--navy);
+    color: white;
+}
+
+.btn-back svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.document-meta {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid var(--cream);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+    font-size: 15px;
+}
+
+.meta-item svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--turquoise);
+}
+
+@media (max-width: 768px) {
+    .detail-header h1 {
+        font-size: 28px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-card,
+    .document-section {
+        padding: 30px;
+    }
+    
+    .document-meta {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .student-profile-section {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+    
+    .student-photo-container {
+        height: 400px !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Detail Hero -->
+    <section class="detail-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Bosh sahifa</a>
+                <span>›</span>
+                <a href="/shogirdlar/">Shogirdlar ijodi</a>
+                <span>›</span>
+                <span style="color: white;">{{ shogird.full_name }}</span>
+            </div>
+            <div class="detail-header">
+                <h1>{{ shogird.dissertation_title }}</h1>
+                <p class="detail-author">{{ shogird.full_name }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detail Content -->
+    <section class="detail-content">
+        <div class="container">
+            <!-- Student Photo and Info Section -->
+            <div class="student-profile-section" style="display: grid; grid-template-columns: 400px 1fr; gap: 50px; margin-bottom: 50px;">
+                <!-- Photo Section -->
+                <div class="student-photo-wrapper">
+                    <div class="student-photo-container" style="width: 100%; height: 500px; border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 15px 40px rgba(45, 95, 127, 0.25); background: #f0f0f0;">
+                        {% if shogird.photo %}
+                        <img src="{{ shogird.photo.url }}" 
+                             alt="{{ shogird.full_name }}" 
+                             style="width: 100%; height: 100%; min-width: 100%; min-height: 100%; object-fit: cover; object-position: center; display: block;">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop" 
+                             alt="{{ shogird.full_name }}" 
+                             style="width: 100%; height: 100%; min-width: 100%; min-height: 100%; object-fit: cover; object-position: center; display: block;">
+                        {% endif %}
+                        <!-- Name Badge -->
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 30px 20px 20px; color: white;">
+                            <h3 style="font-size: 24px; font-weight: 700; margin: 0;">{{ shogird.full_name }}</h3>
+                            <p style="font-size: 16px; margin: 5px 0 0 0; opacity: 0.9;">{{ shogird.current_position|default:"Tadqiqotchi" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Info -->
+                <div class="quick-info">
+                    <h2 style="color: var(--navy); font-size: 28px; margin-bottom: 25px;">Shogird haqida</h2>
+                    <div style="display: grid; gap: 20px;">
+                        <div style="padding: 20px; background: var(--cream); border-radius: 15px; border-left: 4px solid var(--turquoise);">
+                            <h4 style="color: var(--navy); margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Ilmiy daraja</h4>
+                            <p style="margin: 0; font-size: 18px; font-weight: 600; color: var(--text-dark);">{{ shogird.degree }}</p>
+                        </div>
+                        <div style="padding: 20px; background: var(--cream); border-radius: 15px; border-left: 4px solid var(--emerald);">
+                            <h4 style="color: var(--navy); margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Himoya yili</h4>
+                            <p style="margin: 0; font-size: 18px; font-weight: 600; color: var(--text-dark);">{{ shogird.defense_year }}</p>
+                        </div>
+                        <div style="padding: 20px; background: var(--cream); border-radius: 15px; border-left: 4px solid var(--turquoise);">
+                            <h4 style="color: var(--navy); margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Ilmiy rahbar</h4>
+                            <p style="margin: 0; font-size: 18px; font-weight: 600; color: var(--text-dark);">{{ shogird.supervisor }}</p>
+                        </div>
+                        {% if shogird.email %}
+                        <div style="padding: 20px; background: var(--cream); border-radius: 15px; border-left: 4px solid var(--emerald);">
+                            <h4 style="color: var(--navy); margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Email</h4>
+                            <p style="margin: 0; font-size: 16px; color: var(--text-dark);">{{ shogird.email }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Card -->
+            <div class="info-card">
+                <div class="info-grid">
+                    <!-- Author -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Muallif</h3>
+                            <p>{{ shogird.full_name }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Degree -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Ilmiy daraja</h3>
+                            <p>{{ shogird.degree }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Code -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Mutaxassislik kodi</h3>
+                            <p>{{ shogird.specialty_code }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Field -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Ilmiy yo'nalish</h3>
+                            <p>{{ shogird.specialty_name }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Supervisor -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Ilmiy rahbar</h3>
+                            <p>{{ shogird.supervisor }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Organization -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Tashkilot</h3>
+                            <p>{{ shogird.defense_organization }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Year -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Himoya yili</h3>
+                            <p>{{ shogird.defense_year }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Views Count -->
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Ko'rishlar soni</h3>
+                            <p>{{ shogird.views }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Abstract -->
+                    {% if shogird.abstract %}
+                    <div class="info-item" style="grid-column: 1 / -1;">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                            </svg>
+                        </div>
+                        <div class="info-details">
+                            <h3>Tavsif</h3>
+                            <p>{{ shogird.abstract|truncatewords:200 }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Document Section -->
+            <div class="document-section">
+                <div class="document-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+                        <path d="M8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11z" fill="var(--emerald)"/>
+                    </svg>
+                </div>
+                <h2 class="document-title">To'liq matn</h2>
+                <p class="document-description">
+                    Dissertatsiya, avtoreferat yoki ilmiy ish matnini to'liq o'qish uchun quyidagi tugmani bosing. 
+                    Hujjat PDF formatida ochiladi va yuklab olish imkoniyati mavjud.
+                </p>
+                {% if shogird.pdf_file %}
+                <a href="{{ shogird.pdf_file.url }}" target="_blank" class="btn-view-document">
+                {% else %}
+                <a href="#" class="btn-view-document" style="opacity: 0.5; pointer-events: none;">
+                {% endif %}
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .83-.67 1.5-1.5 1.5H7v2H5.5V9H8c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V9H13c.83 0 1.5.67 1.5 1.5v3zm4-3H17v1h1.5V13H17v2h-1.5V9h3v1.5zM7 10.5h1v1H7v-1zm4.5 0h1v3h-1v-3z"/>
+                    </svg>
+                    Hujjatni ochish
+                </a>
+                <div class="document-meta">
+                    <div class="meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+                        </svg>
+                        <span>PDF format</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/>
+                        </svg>
+                        <span>Yuklab olish mumkin</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        <span>Onlayn ko'rish</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="/shogirdlar/" class="btn-back">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Ortga qaytish
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

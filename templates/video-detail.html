@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }} - Video | O'zbek Tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+.video-detail-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    padding: 40px 0 20px;
+    color: white;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: white;
+}
+
+.breadcrumb span {
+    color: rgba(255,255,255,0.5);
+}
+
+.video-detail-content {
+    padding: 60px 0;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%);
+}
+
+.video-player-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: #000;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 50px rgba(45, 95, 127, 0.2);
+    margin-bottom: 40px;
+}
+
+.video-player-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-info-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 5px 20px rgba(45, 95, 127, 0.1);
+}
+
+.video-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+}
+
+.video-meta {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid var(--cream);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 15px;
+}
+
+.video-description {
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    background: white;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.btn-back:hover {
+    background: var(--navy);
+    color: white;
+}
+
+.btn-back svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+@media (max-width: 768px) {
+    .video-title {
+        font-size: 24px;
+    }
+    
+    .video-meta {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .video-info-card {
+        padding: 25px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero -->
+    <section class="video-detail-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Bosh sahifa</a>
+                <span>›</span>
+                <a href="/videolar/">Videolar</a>
+                <span>›</span>
+                <span style="color: white;">{{ video.title }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="video-detail-content">
+        <div class="container">
+            <!-- Video Player -->
+            <div class="video-player-container" id="videoPlayerContainer">
+                {% if video.get_youtube_id %}
+                <div class="video-thumbnail-overlay" id="videoThumbnail" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: #000;">
+                    <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="video-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(255, 255, 255, 0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+                        <svg viewBox="0 0 24 24" style="width: 35px; height: 35px; fill: #2d5f7f; margin-left: 4px;">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top: 10px;">
+                    <a id="videoFallbackLink" href="https://www.youtube.com/watch?v={{ video.get_youtube_id }}" target="_blank" rel="noopener noreferrer" style="color: #fff; background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: 8px; text-decoration: none; display: inline-block;">Agar video ochilmasa, YouTube'da ochish</a>
+                </div>
+                {% else %}
+                <div style="color: white; padding: 50px; text-align: center;">
+                    <p>Video topilmadi</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Video Info -->
+            <div class="video-info-card">
+                <h1 class="video-title">{{ video.title }}</h1>
+                
+                <div class="video-meta">
+                    <div class="meta-item">
+                        📅 {{ video.published_date|date:"d.m.Y" }}
+                    </div>
+                    <div class="meta-item">
+                        👁 {{ video.views }} ko'rishlar
+                    </div>
+                    <div class="meta-item">
+                        📂 {{ video.get_category_display }}
+                    </div>
+                </div>
+
+                <div class="video-description">
+                    {{ video.description|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="/videolar/" class="btn-back">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Ortga qaytish
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Load YouTube IFrame Player API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player = null;
+        var videoTracked = false;
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // This function is called by YouTube API when it's ready
+        function onYouTubeIframeAPIReady() {
+            console.log('YouTube API ready');
+            const videoId = "{{ video.get_youtube_id }}";
+            
+            if (!videoId) {
+                console.error('Video ID not found');
+                return;
+            }
+
+            // Wait for thumbnail click
+            const videoThumbnail = document.getElementById('videoThumbnail');
+            if (videoThumbnail) {
+                videoThumbnail.addEventListener('click', function() {
+                    initializePlayer(videoId);
+                });
+            }
+        }
+
+        function initializePlayer(videoId) {
+            const container = document.getElementById('videoPlayerContainer');
+            if (!container) {
+                console.error('Video player container not found');
+                return;
+            }
+
+            // Remove thumbnail
+            const thumbnail = document.getElementById('videoThumbnail');
+            if (thumbnail) {
+                thumbnail.remove();
+            }
+
+            // Remove fallback link
+            const fallbackLink = document.getElementById('videoFallbackLink');
+            if (fallbackLink) {
+                fallbackLink.parentElement.remove();
+            }
+
+            // Create player div
+            const playerDiv = document.createElement('div');
+            playerDiv.id = 'youtube-player';
+            playerDiv.style.position = 'absolute';
+            playerDiv.style.top = '0';
+            playerDiv.style.left = '0';
+            playerDiv.style.width = '100%';
+            playerDiv.style.height = '100%';
+            container.appendChild(playerDiv);
+
+            // Create YouTube player
+            try {
+                player = new YT.Player('youtube-player', {
+                    height: '100%',
+                    width: '100%',
+                    videoId: videoId,
+                    playerVars: {
+                        'autoplay': 1,
+                        'rel': 0,
+                        'modestbranding': 1,
+                        'enablejsapi': 1
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange,
+                        'onError': function(event) {
+                            console.error('YouTube player error:', event.data);
+                            container.innerHTML = '<div style="color: white; padding: 50px; text-align: center;"><p>Video yuklashda xatolik. <a href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" style="color: #06b6d4;">YouTube\'da ochish</a></p></div>';
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error creating player:', error);
+            }
+        }
+
+        function onPlayerReady(event) {
+            console.log('Player ready, starting video');
+            event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            const videoDbId = {{ video.id }};
+            
+            // Video playing
+            if (event.data == YT.PlayerState.PLAYING && !videoTracked) {
+                console.log('Video playing, starting progress tracking');
+                
+                // Check progress every 2 seconds
+                const checkInterval = setInterval(() => {
+                    if (player && player.getCurrentTime && player.getDuration) {
+                        const currentTime = player.getCurrentTime();
+                        const duration = player.getDuration();
+                        const progress = (currentTime / duration) * 100;
+                        
+                        console.log('Video progress: ' + Math.round(progress) + '%');
+                        
+                        // If watched 80% or more, track it
+                        if (progress >= 80 && !videoTracked) {
+                            videoTracked = true;
+                            clearInterval(checkInterval);
+                            trackVideoWatched(videoDbId);
+                        }
+                    }
+                }, 2000);
+                
+                // Store interval for cleanup
+                window.videoCheckInterval = checkInterval;
+            }
+            
+            // Video ended
+            if (event.data == YT.PlayerState.ENDED && !videoTracked) {
+                videoTracked = true;
+                if (window.videoCheckInterval) {
+                    clearInterval(window.videoCheckInterval);
+                }
+                trackVideoWatched(videoDbId);
+            }
+        }
+
+        function trackVideoWatched(videoDbId) {
+            console.log('Tracking video watched for video ID:', videoDbId);
+            
+            fetch(`/videolar/${videoDbId}/track/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    watched: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Video track response:', data);
+                if (data.status === 'success') {
+                    console.log('Video tracked successfully. Total views:', data.views);
+                    // Update views counter on page if exists
+                    const viewsElement = document.querySelector('.video-meta .meta-item:nth-child(2)');
+                    if (viewsElement && data.views) {
+                        viewsElement.innerHTML = `👁 ${data.views} ko'rishlar`;
+                    }
+                }
+            })
+            .catch(error => console.error('Error tracking video:', error));
+        }
+
+        // Hover effect for thumbnail
+        const videoThumbnail = document.getElementById('videoThumbnail');
+        if (videoThumbnail) {
+            const playButton = videoThumbnail.querySelector('.video-play-button');
+            if (playButton) {
+                videoThumbnail.addEventListener('mouseenter', function() {
+                    playButton.style.transform = 'translate(-50%, -50%) scale(1.15)';
+                });
+                videoThumbnail.addEventListener('mouseleave', function() {
+                    playButton.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            }
+        }
+    </script>
+{% endblock %}

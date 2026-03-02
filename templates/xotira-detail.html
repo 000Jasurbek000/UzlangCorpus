@@ -1,0 +1,504 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ xotira.title }} - Xotiralar | O'zbek Tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+.memory-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    padding: 80px 0 60px;
+    color: white;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: white;
+}
+
+.breadcrumb span {
+    color: rgba(255,255,255,0.5);
+}
+
+.memory-header h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.memory-meta {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+.memory-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.memory-meta-item svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--turquoise);
+}
+
+.memory-content {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--paper) 0%, var(--cream) 100%);
+}
+
+.memory-main {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.memory-text {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    box-shadow: 0 10px 50px rgba(45, 95, 127, 0.12);
+}
+
+.memory-text-content {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-dark);
+}
+
+.memory-text-content p {
+    margin-bottom: 20px;
+}
+
+.memory-text-content p:last-child {
+    margin-bottom: 0;
+}
+
+.memory-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Image and Meta Card */
+.image-meta-card {
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(45, 95, 127, 0.1);
+}
+
+.memory-detail-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(45, 95, 127, 0.15);
+}
+
+.detail-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detail-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-meta-item:last-child {
+    border-bottom: none;
+}
+
+.detail-meta-item svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--turquoise);
+    flex-shrink: 0;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 80px;
+    font-size: 14px;
+}
+
+.meta-value {
+    color: var(--text-dark);
+    font-size: 15px;
+    flex: 1;
+}
+
+.year-badge {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.views-badge {
+    background: var(--cream);
+    color: var(--navy);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(45, 95, 127, 0.1);
+}
+
+.sidebar-card h3 {
+    color: var(--navy);
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    background: linear-gradient(135deg, var(--turquoise) 0%, var(--emerald) 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+    color: white;
+}
+
+.navigation-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--cream);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.nav-btn:hover {
+    background: white;
+    border-color: var(--turquoise);
+    transform: translateX(10px);
+}
+
+.nav-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--turquoise);
+    flex-shrink: 0;
+}
+
+.nav-btn-content h4 {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 5px 0;
+    font-weight: normal;
+}
+
+.nav-btn-content p {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--navy);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 40px;
+}
+
+.back-btn:hover {
+    background: var(--turquoise);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(64, 224, 208, 0.4);
+    color: white;
+}
+
+.back-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+@media (max-width: 768px) {
+    .memory-hero {
+        padding: 60px 0 40px;
+    }
+    
+    .memory-header h1 {
+        font-size: 32px;
+    }
+    
+    .memory-meta {
+        gap: 20px;
+        font-size: 16px;
+        flex-direction: column;
+    }
+    
+    .memory-main {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .memory-text {
+        padding: 30px;
+        order: 2;
+    }
+    
+    .memory-sidebar {
+        order: 1;
+    }
+    
+    .memory-detail-image {
+        height: 250px;
+    }
+    
+    .sidebar-card {
+        padding: 20px;
+    }
+    
+    .image-meta-card {
+        padding: 15px;
+    }
+    
+    .detail-meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 15px 0;
+    }
+    
+    .meta-label {
+        min-width: auto;
+        font-size: 13px;
+    }
+    
+    .meta-value {
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Memory Hero -->
+    <section class="memory-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Bosh sahifa</a>
+                <span>›</span>
+                <a href="/xotiralar/">Xotiralar</a>
+                <span>›</span>
+                <span style="color: white;">{{ xotira.title }}</span>
+            </div>
+            <div class="memory-header">
+                <h1>{{ xotira.title }}</h1>
+                <div class="memory-meta">
+                    <div class="memory-meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                        </svg>
+                        <span>{{ xotira.date }}</span>
+                    </div>
+                    <div class="memory-meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <span>{{ xotira.location }}</span>
+                    </div>
+                    <div class="memory-meta-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        <span>{{ xotira.views }} marta o'qilgan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Content -->
+    <section class="memory-content">
+        <div class="container">
+            <div class="memory-main">
+                <!-- Main Content -->
+                <div class="memory-text">
+                    <div class="memory-text-content">
+                        {{ xotira.full_text|safe }}
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="memory-sidebar">
+                    <!-- Image and Meta Info Card -->
+                    <div class="image-meta-card">
+                        {% if xotira.image %}
+                        <img src="{{ xotira.image.url }}" alt="{{ xotira.title }}" class="memory-detail-image">
+                        {% endif %}
+                        
+                        <div class="detail-meta-info">
+                            <div class="detail-meta-item">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                </svg>
+                                <span class="meta-label">Sana:</span>
+                                <span class="meta-value">{{ xotira.date }}</span>
+                            </div>
+                            
+                            <div class="detail-meta-item">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <span class="meta-label">Joy:</span>
+                                <span class="meta-value">{{ xotira.location }}</span>
+                            </div>
+                            
+                            <div class="detail-meta-item">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z"/>
+                                </svg>
+                                <span class="meta-label">Yil:</span>
+                                <span class="meta-value">
+                                    <span class="year-badge">{{ xotira.year }}</span>
+                                </span>
+                            </div>
+                            
+                            <div class="detail-meta-item">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                                <span class="meta-label">Ko'rishlar:</span>
+                                <span class="meta-value">
+                                    <span class="views-badge">
+                                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--turquoise);">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
+                                        </svg>
+                                        {{ xotira.views }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    {% if tags %}
+                    <div class="sidebar-card">
+                        <h3>Teglar</h3>
+                        <div class="tags-list">
+                            {% for tag in tags %}
+                            <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Navigation -->
+                    <div class="sidebar-card">
+                        <h3>Boshqa xotiralar</h3>
+                        <div class="navigation-buttons">
+                            {% if prev_memory %}
+                            <a href="/xotiralar/{{ prev_memory.id }}/" class="nav-btn">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                                </svg>
+                                <div class="nav-btn-content">
+                                    <h4>Oldingi xotira</h4>
+                                    <p>{{ prev_memory.title }}</p>
+                                </div>
+                            </a>
+                            {% endif %}
+                            
+                            {% if next_memory %}
+                            <a href="/xotiralar/{{ next_memory.id }}/" class="nav-btn">
+                                <div class="nav-btn-content">
+                                    <h4>Keyingi xotira</h4>
+                                    <p>{{ next_memory.title }}</p>
+                                </div>
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="/xotiralar/" class="back-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Xotiralarga qaytish
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

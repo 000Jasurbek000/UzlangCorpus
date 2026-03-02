@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ustoz haqida | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+.ustoz-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    padding: 100px 0 80px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.ustoz-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.ustoz-hero h1 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-serif);
+}
+
+.ustoz-hero p {
+    font-size: 22px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+/* Content Sections */
+.ustoz-content {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, white 100%);
+}
+
+.content-box {
+    background: white;
+    border-radius: 25px;
+    padding: 50px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    margin-bottom: 60px;
+}
+
+.content-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 3px solid var(--turquoise);
+}
+
+.content-box-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: var(--font-serif);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.content-box-stats {
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+}
+
+.stat-number {
+    font-weight: 700;
+    color: var(--turquoise);
+    font-size: 18px;
+}
+
+/* Articles Grid */
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.article-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    border-color: var(--turquoise);
+}
+
+.article-category {
+    display: inline-block;
+    background: var(--turquoise);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.article-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.article-meta {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.article-excerpt {
+    color: #555;
+    line-height: 1.6;
+    font-size: 15px;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.btn-read {
+    color: var(--turquoise);
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.3s ease;
+}
+
+.btn-read:hover {
+    gap: 12px;
+}
+
+/* Videos Grid */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.video-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.video-thumbnail {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    overflow: hidden;
+}
+
+.video-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.video-card:hover .video-play-overlay {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: white;
+}
+
+.video-play-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent var(--turquoise);
+    margin-left: 4px;
+}
+
+.video-info {
+    padding: 25px;
+}
+
+.video-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-meta {
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.empty-state-text {
+    font-size: 18px;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ustoz-hero h1 {
+        font-size: 36px;
+    }
+    
+    .content-box {
+        padding: 30px 20px;
+    }
+    
+    .content-box-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .content-box-title {
+        font-size: 28px;
+    }
+    
+    .articles-grid,
+    .videos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="ustoz-hero">
+        <div class="container">
+            <h1>Ustoz haqida</h1>
+            <p>Professor Ergash Qilichev - o'zbek tilshunosligining yetuk mutaxassisi</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="ustoz-content">
+        <div class="container">
+            <!-- Maqolalar Box -->
+            <div class="content-box">
+                <div class="content-box-header">
+                    <h2 class="content-box-title">
+                        📄 Ilmiy maqolalar
+                    </h2>
+                    <div class="content-box-stats">
+                        <div class="stat-item">
+                            📊 <span class="stat-number">{{ maqola_stats.total }}</span> maqola
+                        </div>
+                        <div class="stat-item">
+                            👁 <span class="stat-number">{{ maqola_stats.total_views }}</span> ko'rildi
+                        </div>
+                    </div>
+                </div>
+
+                {% if maqolalar %}
+                <div class="articles-grid">
+                    {% for maqola in maqolalar %}
+                    <div class="article-card" onclick="window.location.href='/maqolalar/{{ maqola.id }}/'">
+                        <span class="article-category">{{ maqola.get_category_display }}</span>
+                        <h3 class="article-title">{{ maqola.title }}</h3>
+                        <div class="article-meta">
+                            <span>📅 {{ maqola.year }}</span>
+                            <span>✍️ {{ maqola.author }}</span>
+                            <span>👁 {{ maqola.views }}</span>
+                        </div>
+                        <p class="article-excerpt">{{ maqola.description|truncatewords:20 }}</p>
+                        <div class="article-footer">
+                            <a href="/maqolalar/{{ maqola.id }}/" class="btn-read">
+                                Batafsil o'qish →
+                            </a>
+                            <span style="color: #999; font-size: 13px;">{{ maqola.total_pages }} sahifa</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📄</div>
+                    <p class="empty-state-text">Hozircha maqolalar yo'q</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Videolar Box -->
+            <div class="content-box">
+                <div class="content-box-header">
+                    <h2 class="content-box-title">
+                        🎥 Video materiallar
+                    </h2>
+                    <div class="content-box-stats">
+                        <div class="stat-item">
+                            📊 <span class="stat-number">{{ video_stats.total }}</span> video
+                        </div>
+                        <div class="stat-item">
+                            👁 <span class="stat-number">{{ video_stats.total_views }}</span> ko'rildi
+                        </div>
+                    </div>
+                </div>
+
+                {% if videos %}
+                <div class="videos-grid">
+                    {% for video in videos %}
+                    <div class="video-card" onclick="window.location.href='/videolar/{{ video.id }}/'">
+                        <div class="video-thumbnail">
+                            <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}">
+                            <div class="video-play-overlay">
+                                <div class="video-play-icon"></div>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">{{ video.title }}</h3>
+                            <div class="video-meta">
+                                <span>📅 {{ video.published_date|date:"d.m.Y" }}</span>
+                                <span>⏱ {{ video.duration }}</span>
+                                <span>👁 {{ video.views }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">🎥</div>
+                    <p class="empty-state-text">Hozircha videolar yo'q</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

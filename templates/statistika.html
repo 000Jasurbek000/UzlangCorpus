@@ -1,0 +1,692 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Statistika | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* Hero Section */
+.stats-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    padding: 100px 0 80px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.stats-hero h1 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-serif);
+}
+
+.stats-hero p {
+    font-size: 22px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+/* Main Stats Cards */
+.main-stats-section {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, white 100%);
+}
+
+.main-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.main-stat-card {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+}
+
+.main-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--turquoise), var(--gold), var(--navy));
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.main-stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.main-stat-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    border-color: var(--turquoise);
+}
+
+.stat-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.main-stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--navy), var(--turquoise));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 15px;
+    font-family: var(--font-serif);
+    word-break: break-word;
+    line-height: 1.2;
+}
+
+.main-stat-label {
+    color: #666;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 42px;
+    color: var(--navy);
+    text-align: center;
+    margin-bottom: 50px;
+    font-family: var(--font-serif);
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+/* Genre Stats */
+.genre-stats-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.genre-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.genre-item {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%);
+    padding: 25px 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 5px solid var(--turquoise);
+}
+
+.genre-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    border-left-color: var(--gold);
+}
+
+.genre-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.genre-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.genre-count {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--turquoise);
+}
+
+.genre-bar {
+    width: 100%;
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.genre-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--turquoise), var(--navy));
+    border-radius: 10px;
+    transition: width 1s ease;
+    position: relative;
+}
+
+.genre-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Years Stats */
+.years-stats-section {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, white 100%);
+}
+
+.years-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.year-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.year-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.year-period {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 15px;
+}
+
+.year-count {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--turquoise);
+    margin-bottom: 10px;
+}
+
+.year-percent {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
+
+/* (Top authors section removed per request) */
+
+/* Download Button */
+.btn-download:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
+    background: #f0f0f0 !important;
+}
+
+/* Charts Section */
+.charts-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.chart-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+}
+
+.chart-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 25px;
+    text-align: center;
+    font-family: var(--font-serif);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+}
+
+.chart-wrapper.large {
+    height: 400px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-hero h1 {
+        font-size: 36px;
+    }
+    
+    .main-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .top-words-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .author-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .author-stats {
+        text-align: center;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="stats-hero">
+        <div class="container">
+            <h1>📊 Korpus statistikasi</h1>
+            <p>O'zbek tili korpusi bo'yicha batafsil ma'lumotlar</p>
+            <a href="{% url 'main:statistika_export' %}" class="btn-download" style="display: inline-block; margin-top: 20px; padding: 15px 35px; background: white; color: var(--navy); border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; z-index: 10; cursor: pointer;">
+                📄 Statistikani Excel formatda yuklash
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Statistics -->
+    <section class="main-stats-section">
+        <div class="container">
+            <h2 class="section-title">Asosiy ko'rsatkichlar</h2>
+            
+            <div class="main-stats-grid">
+                <div class="main-stat-card">
+                    <span class="stat-icon">📝</span>
+                    <span class="main-stat-number" title="{{ total_words|intcomma }}">{{ total_words|shorten_number }}</span>
+                    <span class="main-stat-label">So'z</span>
+                </div>
+                
+                <div class="main-stat-card">
+                    <span class="stat-icon">📄</span>
+                    <span class="main-stat-number" title="{{ total_documents|intcomma }}">{{ total_documents|intcomma }}</span>
+                    <span class="main-stat-label">Hujjat</span>
+                </div>
+                
+                <div class="main-stat-card">
+                    <span class="stat-icon">💬</span>
+                    <span class="main-stat-number" title="{{ total_sentences|intcomma }}">{{ total_sentences|shorten_number }}</span>
+                    <span class="main-stat-label">Gap</span>
+                </div>
+                
+                <div class="main-stat-card">
+                    <span class="stat-icon">📋</span>
+                    <span class="main-stat-number" title="{{ total_paragraphs|intcomma }}">{{ total_paragraphs|shorten_number }}</span>
+                    <span class="main-stat-label">Paragraf</span>
+                </div>
+                
+                <div class="main-stat-card">
+                    <span class="stat-icon">🔤</span>
+                    <span class="main-stat-number" title="{{ unique_words|intcomma }}">{{ unique_words|shorten_number }}</span>
+                    <span class="main-stat-label">Noyob So'z</span>
+                </div>
+
+                <div class="main-stat-card">
+                    <span class="stat-icon">🔡</span>
+                    <span class="main-stat-number" title="{{ total_characters|intcomma }}">{{ total_characters|intcomma }}</span>
+                    <span class="main-stat-label">Belgilar (bo'sh joy bilan)</span>
+                </div>
+
+                <div class="main-stat-card">
+                    <span class="stat-icon">🔢</span>
+                    <span class="main-stat-number" title="{{ total_characters_no_spaces|intcomma }}">{{ total_characters_no_spaces|intcomma }}</span>
+                    <span class="main-stat-label">Belgilar (bo'sh joysiz)</span>
+                </div>
+
+                <div class="main-stat-card">
+                    <span class="stat-icon">✍️</span>
+                    <span class="main-stat-number" title="{{ total_authors }}">{{ total_authors }}</span>
+                    <span class="main-stat-label">Muallif</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+        <div class="container">
+            <h2 class="section-title">📊 Vizual tahlil</h2>
+            
+            <div class="charts-grid">
+                <!-- Pie Chart: Janrlar bo'yicha -->
+                <div class="chart-container">
+                    <h3 class="chart-title">Janrlar bo'yicha taqsimot</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="genrePieChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Donut Chart: Yillar bo'yicha -->
+                <div class="chart-container">
+                    <h3 class="chart-title">Yillar bo'yicha taqsimot</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="yearsDonutChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- (Top authors bar chart removed) -->
+
+                <!-- Horizontal Bar: Janrlar -->
+                <div class="chart-container" style="grid-column: 1 / -1;">
+                    <h3 class="chart-title">Janrlar bo'yicha so'zlar soni</h3>
+                    <div class="chart-wrapper large">
+                        <canvas id="genresHorizontalBar"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Genre Statistics -->
+    <section class="genre-stats-section">
+        <div class="container">
+            <h2 class="section-title">Janr bo'yicha taqsimot</h2>
+            
+            <div class="genre-list">
+                {% for genre in categories %}
+                <div class="genre-item" style="animation: fadeIn 0.6s ease {{ forloop.counter|add:'-1'|floatformat:1 }}s both">
+                    <div class="genre-header">
+                        <span class="genre-name">{{ genre.name }}</span>
+                        <span class="genre-count" title="{{ genre.count|intcomma }} so'z">{{ genre.count|shorten_number }} so'z</span>
+                    </div>
+                    <div class="genre-bar">
+                        <div class="genre-progress" style="width: {{ genre.percent }}%"></div>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="text-align: center; color: #666; padding: 40px;">Hozircha ma'lumot yo'q</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Years Statistics -->
+    <section class="years-stats-section">
+        <div class="container">
+            <h2 class="section-title">Yillar bo'yicha taqsimot</h2>
+            
+            <div class="years-grid">
+                {% for year in years %}
+                <div class="year-card">
+                    <div class="year-period">{{ year.period }}</div>
+                    <div class="year-count" title="{{ year.count|intcomma }}">{{ year.count|shorten_number }}</div>
+                    <span class="year-percent">{{ year.percent }}%</span>
+                </div>
+                {% empty %}
+                <p style="text-align: center; color: #666; padding: 40px;">Hozircha ma'lumot yo'q</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- (Top authors list removed) -->
+
+    <script>
+    // Chart.js configuration
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    Chart.defaults.font.size = 14;
+
+    // Colors
+    const colors = {
+        navy: '#1e3a8a',
+        turquoise: '#06b6d4',
+        gold: '#f59e0b',
+        purple: '#9333ea',
+        pink: '#ec4899',
+        green: '#10b981',
+        red: '#ef4444',
+        orange: '#f97316'
+    };
+
+    const gradientColors = [
+        'rgba(6, 182, 212, 0.8)',   // turquoise
+        'rgba(30, 58, 138, 0.8)',   // navy
+        'rgba(245, 158, 11, 0.8)',  // gold
+        'rgba(147, 51, 234, 0.8)',  // purple
+        'rgba(236, 72, 153, 0.8)',  // pink
+        'rgba(16, 185, 129, 0.8)',  // green
+        'rgba(239, 68, 68, 0.8)',   // red
+        'rgba(249, 115, 22, 0.8)'   // orange
+    ];
+
+    // Genre Pie Chart
+    const genrePieCtx = document.getElementById('genrePieChart');
+    if (genrePieCtx) {
+        const genreData = {
+            labels: [{% for genre in categories %}'{{ genre.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                data: [{% for genre in categories %}{{ genre.percent }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: gradientColors.slice(0, {{ categories|length }}),
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        };
+
+        new Chart(genrePieCtx, {
+            type: 'pie',
+            data: genreData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Years Donut Chart
+    const yearsDonutCtx = document.getElementById('yearsDonutChart');
+    if (yearsDonutCtx) {
+        const yearsData = {
+            labels: [{% for year in years %}'{{ year.period }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                data: [{% for year in years %}{{ year.percent }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: gradientColors.slice(0, {{ years|length }}),
+                borderWidth: 3,
+                borderColor: '#fff'
+            }]
+        };
+
+        new Chart(yearsDonutCtx, {
+            type: 'doughnut',
+            data: yearsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // (Top authors chart removed)
+
+    // Genres Horizontal Bar Chart
+    const genresHorizontalBarCtx = document.getElementById('genresHorizontalBar');
+    if (genresHorizontalBarCtx) {
+        const genresHBarData = {
+            labels: [{% for genre in categories %}'{{ genre.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: "So'zlar soni",
+                data: [{% for genre in categories %}{{ genre.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: gradientColors.slice(0, {{ categories|length }}),
+                borderWidth: 0,
+                borderRadius: 8,
+                barThickness: 35
+            }]
+        };
+
+        new Chart(genresHorizontalBarCtx, {
+            type: 'bar',
+            data: genresHBarData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.x.toLocaleString() + " so'z";
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 1000000) return (value/1000000).toFixed(1) + 'M';
+                                if (value >= 1000) return (value/1000).toFixed(1) + 'K';
+                                return value;
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    </script>
+{% endblock %}

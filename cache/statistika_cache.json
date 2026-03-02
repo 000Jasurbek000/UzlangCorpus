@@ -1,0 +1,667 @@
+{
+  "total_words": 102601,
+  "total_documents": 33,
+  "total_sentences": 11307,
+  "total_paragraphs": 169,
+  "total_characters": 700028,
+  "total_characters_no_spaces": 586632,
+  "unique_words": 36151,
+  "total_authors": 1,
+  "total_maqolalar": 30,
+  "total_kitoblar": 3,
+  "total_videolar": 2,
+  "categories": [
+    {
+      "name": "Uslubshunoslik va nutq madaniyati",
+      "count": 4073,
+      "percent": 3
+    },
+    {
+      "name": "Matn lingvistikasi",
+      "count": 6184,
+      "percent": 6
+    },
+    {
+      "name": "Alisher Navoiy ijodi",
+      "count": 2489,
+      "percent": 2
+    },
+    {
+      "name": "Fonetika va fonologiya",
+      "count": 2875,
+      "percent": 2
+    },
+    {
+      "name": "Sadriddin Ayniy bilan bog'liq maqolalar",
+      "count": 11810,
+      "percent": 11
+    },
+    {
+      "name": "Leksikologiya",
+      "count": 5387,
+      "percent": 5
+    }
+  ],
+  "years": [
+    {
+      "period": "1960-2000",
+      "count": 63647,
+      "percent": 62
+    },
+    {
+      "period": "2001-2005",
+      "count": 3543,
+      "percent": 3
+    },
+    {
+      "period": "2006-2025",
+      "count": 35411,
+      "percent": 34
+    }
+  ],
+  "top_words": [
+    {
+      "word": "o",
+      "count": 3649
+    },
+    {
+      "word": "bo",
+      "count": 1703
+    },
+    {
+      "word": "so",
+      "count": 1506
+    },
+    {
+      "word": "va",
+      "count": 1430
+    },
+    {
+      "word": "ko",
+      "count": 1327
+    },
+    {
+      "word": "qo",
+      "count": 1011
+    },
+    {
+      "word": "ma",
+      "count": 863
+    },
+    {
+      "word": "ham",
+      "count": 837
+    },
+    {
+      "word": "bir",
+      "count": 827
+    },
+    {
+      "word": "g",
+      "count": 818
+    },
+    {
+      "word": "bilan",
+      "count": 801
+    },
+    {
+      "word": "bu",
+      "count": 772
+    },
+    {
+      "word": "z",
+      "count": 677
+    },
+    {
+      "word": "a",
+      "count": 603
+    },
+    {
+      "word": "to",
+      "count": 513
+    },
+    {
+      "word": "uchun",
+      "count": 441
+    },
+    {
+      "word": "b",
+      "count": 438
+    },
+    {
+      "word": "s",
+      "count": 411
+    },
+    {
+      "word": "yo",
+      "count": 390
+    },
+    {
+      "word": "uslubiy",
+      "count": 386
+    },
+    {
+      "word": "q",
+      "count": 356
+    },
+    {
+      "word": "u",
+      "count": 334
+    },
+    {
+      "word": "i",
+      "count": 305
+    },
+    {
+      "word": "t",
+      "count": 300
+    },
+    {
+      "word": "ta",
+      "count": 283
+    },
+    {
+      "word": "shu",
+      "count": 280
+    },
+    {
+      "word": "lib",
+      "count": 267
+    },
+    {
+      "word": "badiiy",
+      "count": 266
+    },
+    {
+      "word": "har",
+      "count": 266
+    },
+    {
+      "word": "gap",
+      "count": 260
+    },
+    {
+      "word": "yoki",
+      "count": 259
+    },
+    {
+      "word": "k",
+      "count": 254
+    },
+    {
+      "word": "zlar",
+      "count": 251
+    },
+    {
+      "word": "kabi",
+      "count": 240
+    },
+    {
+      "word": "uning",
+      "count": 239
+    },
+    {
+      "word": "lgan",
+      "count": 237
+    },
+    {
+      "word": "zi",
+      "count": 232
+    },
+    {
+      "word": "l",
+      "count": 231
+    },
+    {
+      "word": "bog",
+      "count": 226
+    },
+    {
+      "word": "deb",
+      "count": 224
+    },
+    {
+      "word": "h",
+      "count": 215
+    },
+    {
+      "word": "men",
+      "count": 213
+    },
+    {
+      "word": "zbek",
+      "count": 211
+    },
+    {
+      "word": "edi",
+      "count": 211
+    },
+    {
+      "word": "ega",
+      "count": 209
+    },
+    {
+      "word": "ladi",
+      "count": 206
+    },
+    {
+      "word": "turli",
+      "count": 198
+    },
+    {
+      "word": "xos",
+      "count": 193
+    },
+    {
+      "word": "bunday",
+      "count": 191
+    },
+    {
+      "word": "fe",
+      "count": 191
+    },
+    {
+      "word": "p",
+      "count": 189
+    },
+    {
+      "word": "mumkin",
+      "count": 189
+    },
+    {
+      "word": "ikki",
+      "count": 183
+    },
+    {
+      "word": "m",
+      "count": 183
+    },
+    {
+      "word": "no",
+      "count": 180
+    },
+    {
+      "word": "n",
+      "count": 177
+    },
+    {
+      "word": "qiladi",
+      "count": 171
+    },
+    {
+      "word": "nutq",
+      "count": 167
+    },
+    {
+      "word": "ra",
+      "count": 162
+    },
+    {
+      "word": "lsa",
+      "count": 160
+    },
+    {
+      "word": "mashq",
+      "count": 158
+    },
+    {
+      "word": "ni",
+      "count": 154
+    },
+    {
+      "word": "esa",
+      "count": 153
+    },
+    {
+      "word": "ya",
+      "count": 150
+    },
+    {
+      "word": "til",
+      "count": 145
+    },
+    {
+      "word": "e",
+      "count": 145
+    },
+    {
+      "word": "gaplar",
+      "count": 145
+    },
+    {
+      "word": "ayrim",
+      "count": 137
+    },
+    {
+      "word": "r",
+      "count": 137
+    },
+    {
+      "word": "dedi",
+      "count": 136
+    },
+    {
+      "word": "grammatik",
+      "count": 134
+    },
+    {
+      "word": "matn",
+      "count": 132
+    },
+    {
+      "word": "ammo",
+      "count": 129
+    },
+    {
+      "word": "ishlatiladi",
+      "count": 129
+    },
+    {
+      "word": "hosil",
+      "count": 129
+    },
+    {
+      "word": "nutqda",
+      "count": 123
+    },
+    {
+      "word": "boshqa",
+      "count": 119
+    },
+    {
+      "word": "ba",
+      "count": 119
+    },
+    {
+      "word": "lum",
+      "count": 119
+    },
+    {
+      "word": "ularning",
+      "count": 118
+    },
+    {
+      "word": "shaxs",
+      "count": 117
+    },
+    {
+      "word": "orqali",
+      "count": 116
+    },
+    {
+      "word": "tili",
+      "count": 115
+    },
+    {
+      "word": "emas",
+      "count": 115
+    },
+    {
+      "word": "jihatdan",
+      "count": 112
+    },
+    {
+      "word": "qilib",
+      "count": 111
+    },
+    {
+      "word": "yig",
+      "count": 110
+    },
+    {
+      "word": "ri",
+      "count": 109
+    },
+    {
+      "word": "liq",
+      "count": 109
+    },
+    {
+      "word": "bor",
+      "count": 108
+    },
+    {
+      "word": "ziga",
+      "count": 106
+    },
+    {
+      "word": "sintaktik",
+      "count": 104
+    },
+    {
+      "word": "semantik",
+      "count": 103
+    },
+    {
+      "word": "ayniy",
+      "count": 103
+    },
+    {
+      "word": "da",
+      "count": 102
+    },
+    {
+      "word": "la",
+      "count": 100
+    },
+    {
+      "word": "ish",
+      "count": 100
+    },
+    {
+      "word": "ular",
+      "count": 99
+    },
+    {
+      "word": "roq",
+      "count": 99
+    },
+    {
+      "word": "she",
+      "count": 97
+    },
+    {
+      "word": "nosi",
+      "count": 96
+    },
+    {
+      "word": "tahlil",
+      "count": 96
+    },
+    {
+      "word": "zlashuv",
+      "count": 96
+    },
+    {
+      "word": "biri",
+      "count": 95
+    },
+    {
+      "word": "leksik",
+      "count": 95
+    },
+    {
+      "word": "v",
+      "count": 95
+    },
+    {
+      "word": "lingvistik",
+      "count": 95
+    },
+    {
+      "word": "maqol",
+      "count": 95
+    },
+    {
+      "word": "yasovchi",
+      "count": 95
+    },
+    {
+      "word": "y",
+      "count": 94
+    },
+    {
+      "word": "hamda",
+      "count": 93
+    },
+    {
+      "word": "xil",
+      "count": 93
+    },
+    {
+      "word": "og",
+      "count": 93
+    },
+    {
+      "word": "stilistik",
+      "count": 92
+    },
+    {
+      "word": "li",
+      "count": 92
+    },
+    {
+      "word": "katta",
+      "count": 91
+    },
+    {
+      "word": "qanday",
+      "count": 91
+    },
+    {
+      "word": "shuningdek",
+      "count": 90
+    },
+    {
+      "word": "olib",
+      "count": 90
+    },
+    {
+      "word": "siz",
+      "count": 90
+    },
+    {
+      "word": "shma",
+      "count": 89
+    },
+    {
+      "word": "zining",
+      "count": 88
+    },
+    {
+      "word": "yangi",
+      "count": 88
+    },
+    {
+      "word": "ldi",
+      "count": 88
+    },
+    {
+      "word": "keladi",
+      "count": 88
+    },
+    {
+      "word": "keng",
+      "count": 86
+    },
+    {
+      "word": "xususiyatlari",
+      "count": 85
+    },
+    {
+      "word": "qilish",
+      "count": 85
+    },
+    {
+      "word": "masalan",
+      "count": 84
+    },
+    {
+      "word": "sh",
+      "count": 84
+    },
+    {
+      "word": "shakllari",
+      "count": 84
+    },
+    {
+      "word": "yana",
+      "count": 82
+    },
+    {
+      "word": "sinonim",
+      "count": 81
+    },
+    {
+      "word": "barcha",
+      "count": 81
+    },
+    {
+      "word": "ilmiy",
+      "count": 81
+    },
+    {
+      "word": "yozuvchi",
+      "count": 80
+    },
+    {
+      "word": "kerak",
+      "count": 79
+    },
+    {
+      "word": "holda",
+      "count": 79
+    },
+    {
+      "word": "xalq",
+      "count": 79
+    },
+    {
+      "word": "uchraydi",
+      "count": 79
+    },
+    {
+      "word": "zaro",
+      "count": 78
+    },
+    {
+      "word": "quyidagi",
+      "count": 78
+    },
+    {
+      "word": "shakli",
+      "count": 78
+    },
+    {
+      "word": "adabiy",
+      "count": 77
+    },
+    {
+      "word": "xizmat",
+      "count": 77
+    },
+    {
+      "word": "ming",
+      "count": 77
+    },
+    {
+      "word": "ot",
+      "count": 77
+    },
+    {
+      "word": "biror",
+      "count": 76
+    },
+    {
+      "word": "fonetik",
+      "count": 75
+    }
+  ],
+  "top_authors": [
+    {
+      "name": "Ergash Qilichev",
+      "works": 33,
+      "words": 102601
+    }
+  ]
+}

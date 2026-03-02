@@ -1,0 +1,49 @@
+# =============================================================================
+# UZLINGCORPUS - COMPLETE REQUIREMENTS
+# Barcha muhim kutubxonalar bir joyda - server uchun
+# =============================================================================
+
+# ===== ASOSIY DJANGO FRAMEWORK =====
+Django==6.0.2
+
+# ===== MUHIM KUTUBXONALAR =====
+Pillow==10.0.0                    # Image processing (cover images)
+python-decouple==3.8              # Configuration management
+whitenoise==6.6.0                 # Static files serving
+django-jazzmin==3.0.0             # Admin interface theme
+PyPDF2==3.0.1                     # PDF file processing
+openpyxl==3.1.2                   # Excel export functionality
+
+# ===== DATABASE SUPPORT =====
+psycopg2-binary==2.9.7            # PostgreSQL support (production)
+
+# ===== PRODUCTION SERVER =====
+gunicorn==21.2.0                  # WSGI HTTP Server
+dj-database-url==2.1.0            # Database URL parsing
+
+# ===== SECURITY & PERFORMANCE =====
+django-cors-headers==4.3.1        # CORS handling
+redis==5.0.0                      # Caching backend
+django-redis==5.3.0               # Redis for Django
+
+# ===== DEVELOPMENT TOOLS (optional) =====
+django-debug-toolbar==4.2.0       # Debug information
+django-extensions==3.2.3          # Useful extensions
+
+# ===== TESTING (optional) =====
+pytest==7.4.2                     # Testing framework
+pytest-django==4.5.2              # Django integration for pytest
+coverage==7.3.2                   # Code coverage
+
+# ===== CODE QUALITY (optional) =====
+flake8==6.1.0                     # Code linting
+black==23.9.1                     # Code formatting
+isort==5.12.0                     # Import sorting
+
+# ===== MONITORING (optional) =====
+sentry-sdk[django]==1.32.0        # Error tracking
+
+# =============================================================================
+# O'RNATISH BUYRUQI:
+# pip install -r requirements.txt
+# =============================================================================

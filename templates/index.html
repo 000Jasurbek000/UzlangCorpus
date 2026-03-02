@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}O'zbek tilshunosi - akademik korpus{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero hero-fullscreen">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-image">
+                    <div class="hero-image-wrapper">
+                        <img src="{% static 'images/main.jpg' %}" alt="O'zbek Tilshunosi" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 20px;">
+                    </div>
+                </div>
+                <div class="hero-text">
+                    <div class="hero-badge">Akademik korpus</div>
+                    <h2 class="hero-title">O'zbek tilining ilmiy merosi</h2>
+                    <p class="hero-description">
+                        O'zbek tilshunosining boy merosi va zamonaviy tadqiqotlari. 
+                        Ilmiy maqolalar, kitoblar va videolar bilan tanishing.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="/tarjimai-hol/" class="btn-primary-large">Ijodiy va tarjimai hol</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Keng qamrovli korpus</h3>
+                    <p>O'zbek tilining boy matnlar to'plami</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Ilg'or qidiruv</h3>
+                    <p>Konkordans va kengaytirilgan qidiruv imkoniyatlari</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>Ilmiy resurslar</h3>
+                    <p>Maqolalar, kitoblar va tadqiqotlar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Publications -->
+    <section class="publications">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">So'nggi nashrlar</h2>
+                <div class="ornament-line"></div>
+                <a href="/kitoblar" class="view-all">Barchasini ko'rish →</a>
+            </div>
+            <div class="books-grid">
+                {% for book in latest_books %}
+                <div class="book-card">
+                    {% if book.cover_image %}
+                    <div class="book-cover" style="background: none; padding: 0; position: relative; overflow: hidden;">
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    {% else %}
+                    <div class="book-cover">
+                        <div class="book-spine"></div>
+                        <div class="book-content">
+                            <p class="book-title">{{ book.title }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <h4>{{ book.title|truncatewords:4 }}</h4>
+                    <p class="book-meta">{{ book.year }} • {{ book.author }}</p>
+                </div>
+                {% empty %}
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-spine"></div>
+                        <div class="book-content">
+                            <p class="book-title">Hozircha kitob yo'q</p>
+                        </div>
+                    </div>
+                    <h4>Ma'lumot yo'q</h4>
+                    <p class="book-meta">-</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Authors Carousel -->
+    <section class="authors-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Muallif ijodiy merosi</h2>
+                <div class="ornament-line"></div>
+            </div>
+            <div class="carousel">
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">‹</button>
+                <div class="carousel-track">
+                    <!-- Slide 1: Maqolalar -->
+                    <div class="carousel-slide active" data-slide="0">
+                        <div class="author-card-large">
+                            <div class="carousel-icon">📄</div>
+                            <div class="author-info">
+                                <h3>Ilmiy maqolalar</h3>
+                                <p class="author-title">{{ maqolalar_count }}+ ilmiy tadqiqot</p>
+                                <p class="author-bio">O'zbek tili grammatikasi, morfologiya, semantika bo'yicha chuqur ilmiy tadqiqotlar. Xalqaro jurnallarda chop etilgan maqolalar.</p>
+                                <a href="/maqolalar/" class="btn-text">Batafsil →</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: Kitoblar -->
+                    <div class="carousel-slide" data-slide="1">
+                        <div class="author-card-large">
+                            <div class="carousel-icon">📚</div>
+                            <div class="author-info">
+                                <h3>Nashr etilgan kitoblar</h3>
+                                <p class="author-title">{{ kitoblar_count }} ta monografiya</p>
+                                <p class="author-bio">O'zbek tili grammatikasi, semantika va morfologiya bo'yicha fundamental asarlar. Universitet talabalari uchun darslik sifatida foydalaniladi.</p>
+                                <a href="/kitoblar/" class="btn-text">Batafsil →</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: Videolar -->
+                    <div class="carousel-slide" data-slide="2">
+                        <div class="author-card-large">
+                            <div class="carousel-icon">🎥</div>
+                            <div class="author-info">
+                                <h3>Video materiallar</h3>
+                                <p class="author-title">{{ videolar_count }} ta video</p>
+                                <p class="author-bio">O'zbek tili tarixi, grammatika va lingvistika bo'yicha materiallar. Talabalar va tadqiqotchilar uchun bepul onlayn resurslar.</p>
+                                <a href="/videolar/" class="btn-text">Batafsil →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">›</button>
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scholars Section -->
+    <section class="scholars">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Shogirdlar ijodi</h2>
+                <div class="ornament-line"></div>
+            </div>
+            <div class="tabs">
+                <button class="tab" onclick="switchTab('shogird')">Shogirdlar</button>
+            </div>
+            <div class="scholars-grid" id="ijodkor">
+                {% for shogird in shogirdlar %}
+                <a href="/shogirdlar/{{ shogird.id }}/" style="text-decoration: none; color: inherit;">
+                    <div class="scholar-card" style="cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        {% if shogird.photo %}
+                        <img src="{{ shogird.photo.url }}" alt="{{ shogird.full_name }}" class="scholar-photo">
+                        {% else %}
+                        <div class="scholar-photo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold;">
+                            {{ shogird.full_name.0 }}
+                        </div>
+                        {% endif %}
+                        <div class="scholar-info">
+                            <h4>{{ shogird.full_name }}</h4>
+                            <p>{{ shogird.degree }}</p>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="scholar-card">
+                    <div class="scholar-photo" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 24px;">
+                        ?
+                    </div>
+                    <div class="scholar-info">
+                        <h4>Ma'lumot yo'q</h4>
+                        <p>Hozircha shogirdlar qo'shilmagan</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="videos">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Videomateriallar</h2>
+                <div class="ornament-line"></div>
+                <a href="/videolar" class="btn-outline-sm">Barchasini ko'rish</a>
+            </div>
+            <div class="video-grid">
+                {% for video in latest_videos %}
+                <div class="video-card" onclick="window.location.href='/videolar/{{ video.id }}/'" style="cursor: pointer;">
+                    <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/{{ video.get_youtube_id }}/maxresdefault.jpg'); background-size: cover; background-position: center;">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <h4>{{ video.title }}</h4>
+                    <p class="video-meta">{{ video.views }} ko'rildi{% if video.duration %} • {{ video.duration }}{% endif %}</p>
+                </div>
+                {% empty %}
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="play-btn" style="opacity: 0.3;">▶</div>
+                    </div>
+                    <h4>Video mavjud emas</h4>
+                    <p class="video-meta">Hozircha videolar qo'shilmagan</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Muhim voqealar</h2>
+            <div class="ornament-line"></div>
+        </div>
+
+        <div class="timeline-container">
+
+            <div class="timeline-item">
+                <div class="timeline-date">1940</div>
+                <div class="timeline-content">
+                    <h4>Tavallud topgan</h4>
+                    <p>26-mart — Vobkent tumani Xargo‘sh qishlog‘ida tug‘ilgan.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1958–1963</div>
+                <div class="timeline-content">
+                    <h4>Oliy ta’lim</h4>
+                    <p>Samarqand davlat universiteti Filologiya fakultetini imtiyozli diplom bilan tamomlagan.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1969</div>
+                <div class="timeline-content">
+                    <h4>Dissertatsiya himoyasi</h4>
+                    <p>“Sadriddin Ayniy asarlarida arxaizm va istorizmlar” mavzusida ilmiy ish himoya qilgan.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1971</div>
+                <div class="timeline-content">
+                    <h4>Dotsent unvoni</h4>
+                    <p>Buxoro davlat pedagogika institutida dotsent lavozimida faoliyat boshlagan.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1992</div>
+                <div class="timeline-content">
+                    <h4>Professor unvoni</h4>
+                    <p>O‘zbek tilshunosligi sohasida professor ilmiy unvoniga sazovor bo‘lgan.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1995</div>
+                <div class="timeline-content">
+                    <h4>Xizmat ko‘rsatgan professor</h4>
+                    <p>Buxoro davlat universitetida xizmat ko‘rsatgan professor unvoni berilgan.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Konkordans qidiruv | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <div class="container">
+            <h1 class="page-title">Konkordans qidiruv</h1>
+            <p class="page-subtitle">Korpus ichidan so'z va iboralarni qidiring</p>
+            
+            <div class="search-box">
+                <form method="get" action="{% url 'main:konkordans' %}">
+                    <input type="text" name="q" id="searchQuery" placeholder="So'z yoki iborani kiriting..." 
+                           class="search-main-input" value="{{ query }}" required>
+                    <button type="submit" class="btn-search">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/>
+                            <path d="M14 14L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Qidirish
+                    </button>
+                </form>
+            </div>
+
+            <div class="search-tips">
+                <p><strong>Maslahat:</strong> Aniq so'zni qidirish uchun qo'shtirnoq ichiga oling. Masalan: <code>"til"</code></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <form method="get" action="{% url 'main:konkordans' %}" id="filterForm">
+                <input type="hidden" name="q" value="{{ query }}">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Kategoriya</label>
+                        <select name="category" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Hammasi</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Muallif</label>
+                        <select name="author" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Hammasi</option>
+                            {% for author in authors %}
+                            <option value="{{ author }}" {% if selected_author == author %}selected{% endif %}>{{ author }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Natijalar soni</label>
+                        <select name="limit" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="25" {% if limit == 25 %}selected{% endif %}>25</option>
+                            <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
+                            <option value="100" {% if limit == 100 %}selected{% endif %}>100</option>
+                            <option value="200" {% if limit == 200 %}selected{% endif %}>200</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section">
+        <div class="container">
+            <div class="results-header">
+                <h3 class="results-title">Qidiruv natijalari</h3>
+                <p class="results-count"><span id="resultCount">{{ total_count }}</span> ta natija topildi</p>
+            </div>
+
+            <div id="resultsContainer" class="results-list">
+                {% if results %}
+                    {% for result in results %}
+                    {% comment %} Make result clickable: open article/book detail on matched PDF page {% endcomment %}
+                    {% if result.source_type == 'Maqola' %}
+                    <a href="/maqolalar/{{ result.source_id }}/?page={{ result.page }}&q={{ query|urlencode }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                    {% else %}
+                    <a href="/kitoblar/{{ result.source_id }}/?page={{ result.page }}&q={{ query|urlencode }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                    {% endif %}
+                        <div class="kwic-result">
+                            <div class="kwic-context">
+                                <span class="kwic-left">{{ result.left }}</span>
+                                <span class="kwic-keyword">{{ result.keyword }}</span>
+                                <span class="kwic-right">{{ result.right }}</span>
+                            </div>
+                            <div class="kwic-meta">
+                                <span class="source-title">{{ result.source_title }}</span>
+                                <span class="source-author">{{ result.source_author }}</span>
+                                <span class="source-year">{{ result.source_year }}</span>
+                                <span class="source-type" style="color: #666; font-size: 12px;">({{ result.source_type }})</span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% elif query %}
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <p>Hech narsa topilmadi. Boshqa so'z yoki iborani sinab ko'ring.</p>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <p>Qidiruvni boshlash uchun yuqoridagi qatorga so'z yoki iborani kiriting.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

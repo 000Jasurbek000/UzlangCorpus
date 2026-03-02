@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kengaytirilgan qidiruv | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+<style>
+.advanced-search-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%);
+}
+
+.search-form-advanced {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 10px 50px rgba(45, 95, 127, 0.15);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    font-family: var(--font-sans);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--turquoise);
+    box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-full {
+    grid-column: 1 / -1;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.search-operators {
+    background: var(--cream);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.operator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.operator-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.operator-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.operator-item label {
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-advanced-search {
+    background: linear-gradient(135deg, var(--turquoise) 0%, var(--sky-blue) 100%);
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+}
+
+.btn-advanced-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(64, 224, 208, 0.4);
+}
+
+.btn-reset {
+    background: white;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-reset:hover {
+    background: var(--navy);
+    color: white;
+}
+
+.search-tips-advanced {
+    background: linear-gradient(135deg, rgba(80, 200, 120, 0.1) 0%, rgba(64, 224, 208, 0.1) 100%);
+    padding: 25px;
+    border-radius: 20px;
+    margin-top: 30px;
+    border-left: 4px solid var(--emerald);
+}
+
+.search-tips-advanced h3 {
+    color: var(--navy);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.search-tips-advanced ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.search-tips-advanced li {
+    margin-bottom: 8px;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.search-tips-advanced code {
+    background: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--turquoise);
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-form-advanced {
+        padding: 25px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-advanced-search,
+    .btn-reset {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <div class="container">
+            <h1 class="page-title">Kengaytirilgan qidiruv</h1>
+            <p class="page-subtitle">Aniq va batafsil qidiruv parametrlarini belgilang</p>
+        </div>
+    </section>
+
+    <!-- Advanced Search Form -->
+    <section class="advanced-search-section">
+        <div class="container">
+            <form class="search-form-advanced" method="get" action="">
+                
+                <!-- Search Query -->
+                <div class="form-row">
+                    <div class="form-group form-full">
+                        <label for="mainQuery">Asosiy qidiruv so'zi yoki iborasi</label>
+                        <input type="text" id="mainQuery" name="q" placeholder="So'z yoki iborani kiriting..." value="{{ query }}" required>
+                    </div>
+                </div>
+
+                <!-- Search Operators -->
+                <div class="search-operators">
+                    <label style="font-weight: 600; color: var(--navy); margin-bottom: 15px; display: block;">Qidiruv operatori</label>
+                    <div class="operator-grid">
+                        <div class="operator-item">
+                            <input type="radio" id="exact" name="operator" value="exact" {% if operator == 'exact' %}checked{% endif %}>
+                            <label for="exact">aniq mos kelishi</label>
+                        </div>
+                        <div class="operator-item">
+                            <input type="radio" id="contains" name="operator" value="contains" {% if operator == 'contains' or not operator %}checked{% endif %}>
+                            <label for="contains">ichida bo'lishi</label>
+                        </div>
+                        <div class="operator-item">
+                            <input type="radio" id="starts" name="operator" value="starts" {% if operator == 'starts' %}checked{% endif %}>
+                            <label for="starts">bilan boshlanishi</label>
+                        </div>
+                        <div class="operator-item">
+                            <input type="radio" id="ends" name="operator" value="ends" {% if operator == 'ends' %}checked{% endif %}>
+                            <label for="ends">bilan tugashi</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Include/Exclude -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="include">Qo'shimcha so'zlar (kiritish)</label>
+                        <input type="text" id="include" name="include" placeholder="Masalan: til, adabiyot" value="{{ include }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exclude">Istisno so'zlar (chiqarib tashlash)</label>
+                        <input type="text" id="exclude" name="exclude" placeholder="Masalan: arxaik, eskirgan" value="{{ exclude }}">
+                    </div>
+                </div>
+
+                <!-- Author and Work -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="author">Muallif</label>
+                        <select id="author" name="author" class="filter-select">
+                            <option value="">Hammasi</option>
+                            {% for auth in authors %}
+                            <option value="{{ auth }}" {% if selected_author == auth %}selected{% endif %}>{{ auth }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contextBefore">Oldingi kontekst (so'z)</label>
+                        <input type="number" id="contextBefore" name="context_before" value="{{ context_before|default:5 }}" min="1" max="50">
+                    </div>
+                </div>
+
+                <!-- Genre and Period -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="genre">Kategoriya</label>
+                        <select id="genre" name="genre" class="filter-select">
+                            <option value="">Hammasi</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat }}" {% if selected_genre == cat %}selected{% endif %}>{{ cat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contextAfter">Keyingi kontekst (so'z)</label>
+                        <input type="number" id="contextAfter" name="context_after" value="{{ context_after|default:5 }}" min="1" max="50">
+                    </div>
+                </div>
+
+                <!-- Additional Options -->
+                <div class="form-group form-full">
+                    <label>Qo'shimcha parametrlar</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="caseSensitive" name="case_sensitive" {% if case_sensitive %}checked{% endif %}>
+                            <label for="caseSensitive">Katta-kichik harflarni farqlash</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="wholeWord" name="whole_word" {% if whole_word or not query %}checked{% endif %}>
+                            <label for="wholeWord">Butun so'z</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="regex" name="regex" {% if use_regex %}checked{% endif %}>
+                            <label for="regex">Regex qidiruv</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="btn-group">
+                    <button type="submit" class="btn-advanced-search">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/>
+                            <path d="M14 14L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Qidirish
+                    </button>
+                    <button type="reset" class="btn-reset">Tozalash</button>
+                </div>
+            </form>
+
+            <!-- Search Tips -->
+            <div class="search-tips-advanced">
+                <h3>💡 Qidiruv bo'yicha maslahatlar:</h3>
+                <ul>
+                    <li><code>"til adabiyoti"</code> - qo'shtirnoq ichidagi iborani aniq qidiradi</li>
+                    <li><code>til* </code> - * belgisi o'rniga istalgan harflar kelishi mumkin (til, tillar, tilida)</li>
+                    <li><code>til AND adabiyot</code> - ikkala so'z ham bo'lishi kerak</li>
+                    <li><code>til OR adab</code> - kamida bittasi bo'lishi kerak</li>
+                    <li>Regex qidiruv uchun tegishli katakchani belgilang</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    {% if query %}
+    <section class="results-section" style="padding: 60px 0; background: white;">
+        <div class="container">
+            <div class="results-header" style="margin-bottom: 30px;">
+                <h2 style="color: var(--navy); margin-bottom: 10px;">Qidiruv natijalari</h2>
+                <p class="results-count" style="color: #666;">Jami: <strong>{{ total_count }}</strong> ta natija topildi</p>
+            </div>
+            <div id="searchResults" class="results-list">
+                {% if results %}
+                    {% for result in results %}
+                    {% if result.source_type == 'Maqola' %}
+                        <a href="/maqolalar/{{ result.source_id }}/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                    {% else %}
+                        <a href="/kitoblar/{{ result.source_id }}/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                    {% endif %}
+                        <div class="kwic-result">
+                            <div class="kwic-context">
+                                <span class="kwic-left">{{ result.left }}</span>
+                                <span class="kwic-keyword">{{ result.keyword }}</span>
+                                <span class="kwic-right">{{ result.right }}</span>
+                            </div>
+                            <div class="kwic-meta">
+                                <span class="source-title">{{ result.source_title }}</span>
+                                <span class="source-author">{{ result.source_author }}</span>
+                                <span class="source-year">{{ result.source_year }}</span>
+                                <span class="source-type" style="color: #666; font-size: 12px;">({{ result.source_type }})</span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <p>Hech narsa topilmadi. Qidiruv parametrlarini o'zgartirib ko'ring.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endblock %}

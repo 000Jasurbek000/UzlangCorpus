@@ -1,0 +1,450 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Korpus haqida | O'zbek tilshunosi{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section */
+.korpus-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--turquoise) 100%);
+    padding: 100px 0 80px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.korpus-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.korpus-hero h1 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-serif);
+}
+
+.korpus-hero p {
+    font-size: 22px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+/* About Section */
+.about-section {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, white 100%);
+}
+
+.about-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 42px;
+    color: var(--navy);
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: var(--font-serif);
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+.about-text {
+    font-size: 18px;
+    line-height: 2;
+    color: #444;
+    text-align: justify;
+    margin-bottom: 25px;
+}
+
+.about-text strong {
+    color: var(--navy);
+}
+
+/* Features Section */
+.features-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+    margin-top: 50px;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    border-left: 5px solid var(--turquoise);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    border-left-color: var(--gold);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.feature-title {
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.feature-description {
+    color: #666;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+/* Team Section */
+.team-section {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, white 100%);
+}
+
+.leader-card {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    border: 3px solid var(--gold);
+}
+
+.leader-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.leader-info {
+    padding: 40px;
+}
+
+.leader-name {
+    font-size: 32px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    font-family: var(--font-serif);
+}
+
+.leader-title {
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.leader-degree {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.leader-bio {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.leader-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--turquoise);
+    font-weight: 500;
+    padding: 8px 0;
+}
+
+.contact-item svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--turquoise);
+    flex-shrink: 0;
+}
+
+/* Contributors Grid */
+.contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.contributor-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+}
+
+.contributor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.contributor-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.contributor-info {
+    padding: 25px;
+}
+
+.contributor-name {
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.contributor-role {
+    color: var(--turquoise);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.contributor-specialty {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.contributor-contribution {
+    color: #666;
+    line-height: 1.7;
+    font-size: 14px;
+    padding-top: 15px;
+    border-top: 2px solid var(--cream);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .korpus-hero h1 {
+        font-size: 36px;
+    }
+    
+    .leader-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .leader-image {
+        height: 300px;
+    }
+    
+    .contributors-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="korpus-hero">
+        <div class="container">
+            <h1>📚 O'zbek tilining milliy korpusi</h1>
+            <p>Zamonaviy korpus lingvistikasi - tilni o'rganishning ilmiy asosi</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="section-title">Korpus haqida</h2>
+                
+                <p class="about-text">
+                    <strong>"Ergash Qilichev mualliflik korpusi"</strong> raqamli gumanitar tadqiqotlar tamoyillari asosida yaratilgan integrativ ilmiy-axborot platformadir. Mazkur korpus olimning ilmiy, pedagogik va ma'naviy merosini tizimli ravishda jamlash, raqamlashtirish, strukturlashtirish hamda lingvistik va diskursiv tahlil qilish imkonini beruvchi ko'p funksiyali elektron muhitni tashkil etadi.
+                </p>
+                
+                <p class="about-text">
+                    Korpus <strong>author-centered (muallifga yo'naltirilgan)</strong> model asosida tuzilgan bo'lib, barcha materiallar yagona konseptual va texnik platforma doirasida o'zaro bog'langan holda ishlaydi. Tizim modulli arxitekturaga ega bo'lib, har bir modul mustaqil funksional vazifani bajaradi.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Korpus modullari</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🏠</span>
+                    <h3 class="feature-title">Bosh sahifa moduli</h3>
+                    <p class="feature-description">
+                        Bosh sahifa korpusning navigatsion va konseptual markazi hisoblanadi. Unda loyiha maqsadi, ilmiy dolzarbligi, nazariy-metodologik asoslari va foydalanish bo‘yicha qisqa yo‘riqnoma joylashtiriladi. Shuningdek, statistik ma’lumotlar — matnlar soni, umumiy so‘zlar hajmi, lemmalar miqdori, morfologik teglangan birliklar soni — vizual shaklda taqdim etiladi.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">👤</span>
+                    <h3 class="feature-title">Tarjimayi hol moduli</h3>
+                    <p class="feature-description">
+                        Ushbu modul olimning hayoti va ilmiy faoliyatini xronologik asosda yoritadi. Biografik ma’lumotlar, ilmiy bosqichlar, mehnat faoliyati, mukofot va e’tiroflar tizimlashtirilgan holda beriladi. Modul muallif diskursi rivojlanishining tarixiy va ijtimoiy-madaniy kontekstini aniqlash imkonini yaratadi.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3 class="feature-title">Qidiruv moduli</h3>
+                    <p class="feature-description">
+                        KWIC asosida kalit so‘zning matndagi kontekstini ko‘rsatuvchi konkordans qidiruv hamda morfologik teglash, lemmatizatsiya va turli filtrlar asosida grammatik shakl, davr, janr yoki mavzu bo‘yicha izlanish imkonini beruvchi kengaytirilgan qidiruvni o‘z ichiga oladi va NLP hamda Text Mining texnologiyalariga tayanadi.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📚</span>
+                    <h3 class="feature-title">Muallif ijodiy merosi moduli</h3>
+                    <p class="feature-description">Ilmiy maqolalar — mavzular kesimida tasniflangan to‘liq matnli manbalar;
+Kitoblar — monografiya, darslik va o‘quv qo‘llanmalarning raqamli variantlari;
+Munavar xotiralar — muallif xotiralari haqidagi esdalik matnlari;
+Ustoz haqida — zamondoshlar va shogirdlar maqolalari.
+
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎓</span>
+                    <h3 class="feature-title">Akademik meros va ilmiy maktab moduli</h3>
+                    <p class="feature-description">
+                        Mazkur modul olim rahbarligida himoya qilingan tadqiqot ishlar, shogirdlar maqolalari va ilmiy loyihalarni o‘z ichiga oladi. Bu orqali ilmiy an’ana, metodologik davomiylik va konseptual uzviylik kuzatiladi.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎥</span>
+                    <h3 class="feature-title">Video materiallar moduli</h3>
+                    <p class="feature-description">
+                        Vidio vizual materiallar —intervyular, yubiley tadbirlari yozuvlari — ushbu modulda jamlanadi. Bu materiallar muallifning og‘zaki nutq diskursi, kommunikativ strategiyalari va prosodik xususiyatlarini tahlil qilish imkonini yaratadi. 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leader Section -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Loyiha rahbari</h2>
+            
+            <div class="leader-card">
+                <img src="{{ leader.image }}" alt="{{ leader.name }}" class="leader-image">
+                <div class="leader-info">
+                    <h3 class="leader-name">{{ leader.name }}</h3>
+                    <p class="leader-title">{{ leader.title }}</p>
+                    <p class="leader-degree">{{ leader.degree }}</p>
+                    <p class="leader-bio">{{ leader.bio }}</p>
+                    <div class="leader-contact">
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span>{{ leader.email }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span>{{ leader.phone }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>{{ leader.address }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            </svg>
+                            <span>Ish vaqti: {{ leader.work_time }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contributors Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Korpus tuzuvchilari</h2>
+            <p style="text-align: center; color: #666; margin-top: 10px; font-size: 18px;">
+                Loyihaning asosiy ishtirokchilari va ularning hissalari
+            </p>
+            
+            <div class="contributors-grid">
+                {% for contributor in contributors %}
+                <div class="contributor-card">
+                    <img src="{{ contributor.image }}" alt="{{ contributor.name }}" class="contributor-image">
+                    <div class="contributor-info">
+                        <h3 class="contributor-name">{{ contributor.name }}</h3>
+                        <p class="contributor-role">{{ contributor.role }}</p>
+                        <p class="contributor-specialty">{{ contributor.specialty }}</p>
+                        <p class="contributor-contribution">
+                            <strong>Hissasi:</strong> {{ contributor.contribution }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

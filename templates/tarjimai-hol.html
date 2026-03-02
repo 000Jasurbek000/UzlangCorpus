@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tarjimai hol | O'zbek Tilshunosi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/biography.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Biography Hero -->
+    <section class="bio-hero">
+        <div class="container">
+            <div class="bio-hero-content">
+                <div class="bio-portrait">
+                    <div class="portrait-frame">
+                        <img src="{% static 'images/tarjimai_hol.jpg' %}" alt="Professor" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="bio-intro">
+                    <h1 class="bio-name">Professor Ergash Qilichev</h1>
+                    <p class="bio-title">Filologiya fanlari doktori, professor</p>
+                    <p class="bio-subtitle">O‘zbek tilshunosligi bo‘yicha yetuk olim va pedagog</p>
+                    
+                    <div class="bio-badges">
+                        <span class="badge">O‘zbek tilshunosligi olimi</span>
+                        <span class="badge">Ilmiy maktab asoschisi</span>
+                        <span class="badge">13 ta o‘quv qo‘llanma muallifi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Biography Content -->
+    <section class="bio-content">
+        <div class="container">
+            <div class="bio-grid">
+                <!-- Left Sidebar -->
+                <aside class="bio-sidebar">
+                    <div class="sidebar-card">
+                        <h3>Tug'ilgan sana</h3>
+                        <p>26-mart, 1940-yil</p>
+                    </div>
+                    <div class="sidebar-card">
+                        <h3>Ta'lim</h3>
+                        <ul class="education-list">
+                            <li>
+                                <strong>1958–1963</strong><br>
+                                Alisher Navoiy nomidagi Samarqand davlat universiteti<br>
+                                <em>Filologiya fakulteti</em>
+                            </li>
+                            <li>
+                                <strong>1967–1969</strong><br>
+                                Toshkent davlat universiteti qoshidagi aspirantura<br>
+                                <em>O‘zbek tilshunosligi</em>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-card">
+                    <h3>Mukofotlar va unvonlar</h3>
+                    <ul class="awards-list">
+                        <li>🏅 1974 — “O‘zbekiston Xalq maorifi a’lochisi” nishoni</li>
+                        <li>🏅 1983 — O‘zbekiston Xalq maorifi vazirligining “Faxriy yorlig‘i”</li>
+                        <li>🏅 1990 — “Mehnat faxriysi” medali</li>
+                        <li>🏅 1995 — Buxoro davlat universitetida xizmat ko‘rsatgan professor unvoni</li>
+                    </ul>
+                </div>
+                    <div class="sidebar-card">
+                        <h3>Aloqa</h3>
+                        <p>📧 tugulijon@mail.ru<br>
+                        📞 +998 90 299 34 17</p>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="bio-main">
+                   <article class="bio-section">
+    <h2>Hayot yo'li</h2>
+    <div class="ornament-line-left"></div>
+
+    <p>Professor Ergash Qilichev 1940-yil 26-martda Vobkent tumani Xargo‘sh qishlog‘ida tavallud topgan. Mehnat faoliyatini erta boshlagan olim 1956–1958-yillarda Galaosiyo tumanidagi mashina-traktor parkida slesar sifatida ishlagan.</p>
+    
+    <p>1958-yilda Alisher Navoiy nomidagi Samarqand davlat universiteti filologiya fakultetiga o‘qishga kirib, 1963-yilda imtiyozli diplom bilan tamomlagan. 1967–1969-yillarda Toshkent davlat universiteti qoshidagi aspiranturani tugatib, 1969-yil 30-oktabrda “Sadriddin Ayniy asarlarida arxaizm va istorizmlar” mavzusidagi dissertatsiyasini muvaffaqiyatli himoya qilgan.</p>
+    
+    <p>Ilmiy-pedagogik faoliyatini Buxoro davlat pedagogika institutida boshlab, 1971-yildan dotsent, 1992-yildan professor lavozimida faoliyat yuritib kelmoqda. 1981–1986-yillarda fakultet dekani, 1994–1995-yillarda o‘quv ishlari bo‘yicha prorektor lavozimlarida samarali mehnat qilgan.</p>
+</article>
+
+                    <article class="bio-section">
+    <h2>Ilmiy faoliyat</h2>
+    <div class="ornament-line-left"></div>
+
+    <p>Professor Ergash Qilichev o‘zbek tilshunosligi sohasida ko‘p yillik ilmiy faoliyat olib borgan yetuk olimdir. Uning tadqiqotlari asosan badiiy matn leksikasi, stilistika va matn lingvistikasi yo‘nalishlariga bag‘ishlangan.</p>
+
+    <ul class="content-list">
+        <li>Badiiy tasvirning leksik vositalari</li>
+        <li>O‘zbek tilining amaliy va nazariy stilistikasi</li>
+        <li>Nutq madaniyati va uslubiyat</li>
+        <li>Matn lingvistikasi va matn tahlili</li>
+        <li>O‘zbek tili onomastikasi</li>
+    </ul>
+
+    <p>Olim 13 ta darslik va o‘quv qo‘llanma muallifi bo‘lib, uning asarlari oliy ta’lim muassasalarida keng qo‘llanib kelmoqda. Uning ilmiy merosi o‘zbek tilshunosligi maktabining shakllanishi va rivojlanishida muhim o‘rin tutadi.</p>
+</article>
+
+                    <article class="bio-section">
+    <h2>Nashrlar</h2>
+    <div class="ornament-line-left"></div>
+
+    <div class="publications-grid">
+
+        <div class="publication-card">
+            <div class="pub-year">1982</div>
+            <h4>Badiiy tasvirning leksik vositalari</h4>
+            <p>Toshkent, “Fan” nashriyoti</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">1985</div>
+            <h4>O‘zbek tilining praktik stilistikasi</h4>
+            <p>Oliy o‘quv yurtlari uchun o‘quv qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">1992</div>
+            <h4>O‘zbek tilining amaliy stilistikasi</h4>
+            <p>Filologiya fakulteti talabalari uchun qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2001</div>
+            <h4>O‘zbek tili onomastikasi</h4>
+            <p>Oliy o‘quv yurtlari uchun o‘quv qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2002</div>
+            <h4>Nutq madaniyati va uslubiyat asoslari</h4>
+            <p>(Hammuallif B.E.Qilichev)</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2004</div>
+            <h4>Matnning lingvistik tahlili</h4>
+            <p>Oliy o‘quv yurtlari uchun o‘quv qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2006</div>
+            <h4>Uslubiyat nazariyasi</h4>
+            <p>Magistrlar uchun o‘quv qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2008</div>
+            <h4>Matn lingvistikasi</h4>
+            <p>Magistrlar uchun o‘quv qo‘llanma</p>
+        </div>
+
+        <div class="publication-card">
+            <div class="pub-year">2010</div>
+            <h4>Lingvistik terminlarning o‘zbekcha-ruscha-inglizcha lug‘ati</h4>
+            <p>(Hammuallif M.Qilicheva)</p>
+        </div>
+
+    </div>
+</article>
+
+                   <article class="bio-section">
+    <h2>Shogirdlar va pedagogik faoliyat</h2>
+    <div class="ornament-line-left"></div>
+
+    <p>Professor Ergash Qilichev ko‘p yillik pedagogik faoliyati davomida yuzlab talabalar va magistrlarni tarbiyalagan. Uning ilmiy-pedagogik tajribasi Buxoro davlat universiteti o‘zbek tilshunosligi maktabining shakllanishi va rivojlanishida muhim o‘rin tutadi.</p>
+
+    <p>U nafaqat ilmiy tadqiqotlar, balki tashkilotchilik faoliyati bilan ham ajralib turadi. 1981–1986-yillarda fakultet dekani, 1994–1995-yillarda o‘quv ishlari bo‘yicha prorektor lavozimlarida samarali faoliyat yuritgan.</p>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">40+ yil</div>
+            <div class="stat-label">Pedagogik faoliyat</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">13</div>
+            <div class="stat-label">Darslik va o‘quv qo‘llanma</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">1969</div>
+            <div class="stat-label">Dissertatsiya himoyasi</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">1992</div>
+            <div class="stat-label">Professor unvoni</div>
+        </div>
+    </div>
+</article>
+                </main>
+            </div>
+        </div>
+    </section>
+{% endblock %}

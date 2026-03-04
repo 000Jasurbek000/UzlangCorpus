@@ -403,40 +403,41 @@ def korpus_haqida(request):
     # Shogirdlar (tuzuvchilar)
     contributors = [
         {
+            'name': 'Sharipova Ra\'no Akmalovna',
+            'role': 'Sayt tuzuvchisi va korpus tashkilotchisi',
+            'specialty': 'Kompyuter lingvistikasi yo\'nalishi magistranti',
+            'image': '/static/images/rano.jpg',
+            'contribution': '2004-yil 27-fevral kuni Buxoro shahrida tug\'ilgan. Ilmiy faoliyati tabiiy tilni qayta ishlash va o\'zbek tilining raqamli resurslarini rivojlantirishga qaratilgan. Magistrlik dissertatsiyasi mavzusi — "Tibbiyot sohasida o\'zbek tilidagi hujjatlar uchun til modelini ishlab chiqish". Ushbu yo\'nalishda ilmiy maqola va tezislar nashr etib kelmoqda. Mualliflik korpusini yaratishda Ergash Qilichev asarlarini to\'plash, raqamlashtirish va korpusga tayyorlash ishlarida faol ishtirok etgan. Loyihaning veb-platformasini loyihalash va ishlab chiqishda asosiy hissa qo\'shgan.'
+        },
+        {
+            'name': 'Olimova Taxmina Faxriddinovna',
+            'role': 'Korpus matnlarini tayyorlovchi va sayt ishlab chiquvchisi',
+            'specialty': 'Kompyuter lingvistikasi magistranti',
+            'image': '/static/images/taxmina.jpg',
+            'contribution': '"Rektor stipendiyasi" sohibasi (2 marta). "Iqtidorli talabalar oltin fondi" a\'zosi. 2025-yilda BuxDU Filologiya fakulteti "Filologiya va tillarni oʻqitish: oʻzbek tili" bakalavr ta\'lim yoʻnalishini imtiyozli diplom asosida bitirib, "Kompyuter lingvistikasi" mutaxassisligi boʻyicha davlat granti asosida magistratura bosqichiga oʻqishga qabul qilingan. Magistrlik dissertatsiya mavzusi "Korpusda qisqartmalarni teglashning lingvistik va dasturiy asoslari" bo\'lib, ushbu yo\'nalishda ilmiy izlanishlar olib borib, natijalarini ilmiy maqola va tezislar ko\'rinishida nashr ettirib kelmoqda.'
+        },
+        {
+            'name': 'Taxirova Marjona Olim qizi',
+            'role': 'Korpus matnlarini tayyorlovchi',
+            'specialty': 'Kompyuter lingvistikasi magistranti',
+            'image': '/static/images/marjona.jpg',
+            'contribution': 'Buxoro davlat universiteti Kompyuter lingvistikasi magistranti. "Ergash Qilichev mualliflik korpusi"ni yaratish jarayonida muallif maqolalarini to\'plash, ularni raqamlashtirish hamda korpus tarkibiga kiritish uchun matnlarni tayyorlash ishlarini amalga oshirgan. Ilmiy faoliyati "Oʻzbek tili korpusi birliklarini lugʻat asosida semantik teglash axborot tizimi" mavzusida bo\'lib, ushbu yo\'nalishda izlanishlar natijasida ilmiy maqola va tezislar nashr ettirib kelmoqda. Email: marjonaxontaxirova@gmail.com'
+        },
+        {
+            'name': 'Jo\'rayeva Oqilaxon',
+            'role': 'Sayt yaratuvchisi va ilmiy ishlarni yig\'uvchi',
+            'specialty': 'Filologiya va kompyuter lingvistikasi magistranti',
+            'image': '/static/images/oqilaxon.jpg',
+            'contribution': '1995-yil 7-may kuni Buxoro viloyati Jondor tumanida tug\'ilgan. 2019-yilda Buxoro davlat universiteti Filologiya fakultetini tamomlagan. Hozirgi kunda magistratura bosqichida ilmiy izlanishlarini davom ettirmoqda. Magistrlik dissertatsiyasi mavzusi — "Lingvistik terminlarning ontologik modelini tuzish va uning dasturiy ta\'minotini yaratish" bo\'lib, lingvistik terminlarni ontologik asosda modellashtirishga qaratilgan. Mualliflik korpusini yaratishda Ergash Qilichevning shogirdlari tomonidan bajarilgan ilmiy ishlarni yig\'ish va ularni korpusga kiritish uchun tayyorlash ishlarini amalga oshirgan.'
+        },
+        {
             'name': 'Dr. Nodira Rahimova',
             'role': 'Morfologiya bo\'limi rahbari',
             'specialty': 'Morfologik tahlil va annotatsiya',
-            'image': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+            'image': '/static/images/rahbar.jpg',
             'contribution': 'Morfologik teg tizimini ishlab chiqish, 5 million so\'zni annotatsiya qilish'
-        },
-        {
-            'name': 'Dr. Jasur Karimov',
-            'role': 'Sintaksis bo\'limi rahbari',
-            'specialty': 'Sintaktik tahlil va parsing',
-            'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-            'contribution': 'Sintaktik parser yaratish, gap tuzilmalarini tahlil qilish tizimlari'
-        },
-        {
-            'name': 'Dilnoza Abdullayeva',
-            'role': 'Matn to\'plash va tayyorlash',
-            'specialty': 'Korpus arxitekturasi',
-            'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-            'contribution': '15,000 ta matnni raqamlashtirish, korpus strukturasini loyihalash'
-        },
-        {
-            'name': 'Bobur Rahmonov',
-            'role': 'Texnik ishlar bo\'limi',
-            'specialty': 'Dasturiy ta\'minot',
-            'image': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
-            'contribution': 'Qidiruv tizimini yaratish, web interfeys va API ishlab chiqish'
-        },
-        {
-            'name': 'Malika Turgunova',
-            'role': 'Leksikografiya bo\'limi',
-            'specialty': 'Lug\'at tuzish',
-            'image': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400',
-            'contribution': 'Chastota lug\'ati, kollokatsiyalar bazasi va semantik teg tizimi'
         }
+        
     ]
     
     context = {

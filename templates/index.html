@@ -59,24 +59,26 @@
                 <div class="ornament-line"></div>
                 <a href="/kitoblar" class="view-all">Barchasini ko'rish →</a>
             </div>
-            <div class="books-grid">
+            <div class="books-grid books-grid-home">
                 {% for book in latest_books %}
-                <div class="book-card">
-                    {% if book.cover_image %}
-                    <div class="book-cover" style="background: none; padding: 0; position: relative; overflow: hidden;">
-                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-                    </div>
-                    {% else %}
-                    <div class="book-cover">
-                        <div class="book-spine"></div>
-                        <div class="book-content">
-                            <p class="book-title">{{ book.title }}</p>
+                <a href="{% url 'main:kitob_detail' book.id %}" class="book-card-link">
+                    <div class="book-card">
+                        {% if book.cover_image %}
+                        <div class="book-cover" style="background: none; padding: 0; position: relative; overflow: hidden;">
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                         </div>
+                        {% else %}
+                        <div class="book-cover">
+                            <div class="book-spine"></div>
+                            <div class="book-content">
+                                <p class="book-title">{{ book.title }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <h4>{{ book.title|truncatewords:4 }}</h4>
+                        <p class="book-meta">{{ book.year }} • {{ book.author }}</p>
                     </div>
-                    {% endif %}
-                    <h4>{{ book.title|truncatewords:4 }}</h4>
-                    <p class="book-meta">{{ book.year }} • {{ book.author }}</p>
-                </div>
+                </a>
                 {% empty %}
                 <div class="book-card">
                     <div class="book-cover">

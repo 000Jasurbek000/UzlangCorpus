@@ -431,11 +431,11 @@ def korpus_haqida(request):
             'contribution': '1995-yil 7-may kuni Buxoro viloyati Jondor tumanida tug\'ilgan. 2019-yilda Buxoro davlat universiteti Filologiya fakultetini tamomlagan. Hozirgi kunda magistratura bosqichida ilmiy izlanishlarini davom ettirmoqda. Magistrlik dissertatsiyasi mavzusi — "Lingvistik terminlarning ontologik modelini tuzish va uning dasturiy ta\'minotini yaratish" bo\'lib, lingvistik terminlarni ontologik asosda modellashtirishga qaratilgan. Mualliflik korpusini yaratishda Ergash Qilichevning shogirdlari tomonidan bajarilgan ilmiy ishlarni yig\'ish va ularni korpusga kiritish uchun tayyorlash ishlarini amalga oshirgan.'
         },
         {
-            'name': 'Dr. Nodira Rahimova',
-            'role': 'Morfologiya bo\'limi rahbari',
-            'specialty': 'Morfologik tahlil va annotatsiya',
-            'image': '/static/images/rahbar.jpg',
-            'contribution': 'Morfologik teg tizimini ishlab chiqish, 5 million so\'zni annotatsiya qilish'
+            'name': 'Boltayeva Muxlisa Muxtorovna',
+            'role': 'Sayt yaratuvchisi va multimedia ma\'lumotlarni yig\'uvchi',
+            'specialty': 'Kompyuter lingvistikasi magistranti',
+            'image': '/static/images/muxlisa.jpg',
+            'contribution': '2003-yil 1-iyun kuni Buxoro viloyati Olot tumanida tug\'ilgan. 2025-yilda Buxoro davlat universiteti Filologiya fakultetini tamomlagan. Hozirgi kunda magistratura bosqichida ilmiy izlanishlarini davom ettirmoqda. Magistrlik dissertatsiyasi mavzusi — "O\'zbek-ingliz maqollari parallel korpusini tuzishning lingvistik va dasturiy ta\'minoti" bo\'lib, ushbu yo\'nalishda ilmiy izlanishlar olib borib, natijalarini ilmiy maqola va tezislar ko\'rinishida nashr ettirib kelmoqda. Mualliflik korpusini yaratishda Ergash Qilichevning videolavhalarini, tasvirlarini va professor Ergash Qilichev hayoti va ilmiy faoliyati haqida yozilgan maqolalarni yig\'ib korpusga kiritish uchun tayyorlash ishlarini amalga oshirgan.'
         }
         
     ]

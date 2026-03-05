@@ -640,11 +640,13 @@ class Fotogalereya(models.Model):
         verbose_name="URL slug"
     )
     
-    # Rasm
+    # Rasm (ixtiyoriy - asosiy rasm uchun)
     image = models.ImageField(
         upload_to='images/fotogalereya/',
-        verbose_name="Rasm",
-        help_text="Professional sifatli rasm (tavsiya: 1200x800px)"
+        blank=True,
+        null=True,
+        verbose_name="Asosiy rasm (ixtiyoriy)",
+        help_text="Professional sifatli rasm (tavsiya: 1200x800px). Agar qo'shimcha rasmlar qo'shsangiz, bu maydon ixtiyoriy."
     )
     
     # Ma'lumotlar
@@ -690,6 +692,70 @@ class Fotogalereya(models.Model):
         if not self.slug:
             self.slug = slugify(self.title[:100])
         super().save(*args, **kwargs)
+    
+    @property
+    def get_all_images(self):
+        """
+        Barcha rasmlarni olish (asosiy + qo'shimcha rasmlar)
+        """
+        images = []
+        if self.image:
+            images.append({
+                'url': self.image.url,
+                'caption': 'Asosiy rasm',
+                'is_primary': True
+            })
+        # Qo'shimcha rasmlarni qo'shish
+        for foto in self.rasmlar.all():
+            images.append({
+                'url': foto.image.url,
+                'caption': foto.caption if foto.caption else '',
+                'is_primary': False,
+                'order': foto.order
+            })
+        return images
+
+
+class FotogalereyaRasm(models.Model):
+    """
+    Fotogalereyaga qo'shimcha rasmlar (bir tadbir uchun ko'p rasmlar)
+    """
+    fotogalereya = models.ForeignKey(
+        Fotogalereya,
+        on_delete=models.CASCADE,
+        related_name='rasmlar',
+        verbose_name="Fotogalereya"
+    )
+    image = models.ImageField(
+        upload_to='images/fotogalereya/',
+        verbose_name="Rasm",
+        help_text="Professional sifatli rasm (tavsiya: 1200x800px)"
+    )
+    caption = models.CharField(
+        max_length=500,
+        blank=True,
+        verbose_name="Izoh",
+        help_text="Rasm haqida qisqacha izoh (ixtiyoriy)"
+    )
+    order = models.IntegerField(
+        default=0,
+        verbose_name="Tartib raqami",
+        help_text="Rasmlarni ko'rsatish tartibi (kichik raqam birinchi)"
+    )
+    
+    # Vaqt
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Yuklangan sana"
+    )
+    
+    class Meta:
+        verbose_name = "Fotogalereya rasmi"
+        verbose_name_plural = "Fotogalereya rasmlari"
+        ordering = ['order', 'id']
+    
+    def __str__(self):
+        return f"{self.fotogalereya.title} - Rasm {self.order}"
 
 
 class Xotira(models.Model):

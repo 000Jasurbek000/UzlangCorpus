@@ -212,10 +212,11 @@
 
 /* Contributors Grid */
 .contributors-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 30px;
     margin-top: 50px;
+    justify-content: center;
 }
 
 .contributor-card {
@@ -225,9 +226,25 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     transition: all 0.4s ease;
     border: 2px solid transparent;
-    min-height: 650px;
+    min-height: 750px;
     display: flex;
     flex-direction: column;
+    width: calc(33.333% - 20px);
+    max-width: 380px;
+}
+
+/* Birinchi 3 ta to'liq kenglikda */
+.contributor-card:nth-child(1),
+.contributor-card:nth-child(2),
+.contributor-card:nth-child(3) {
+    width: calc(33.333% - 20px);
+}
+
+/* Oxirgi 2 ta kengroq va markazda */
+.contributor-card:nth-child(4),
+.contributor-card:nth-child(5) {
+    width: calc(40% - 15px);
+    max-width: 450px;
 }
 
 .contributor-card:hover {
@@ -238,8 +255,9 @@
 
 .contributor-image {
     width: 100%;
-    height: 350px;
+    height: 450px;
     object-fit: cover;
+    object-position: center top;
     transition: transform 0.4s ease;
     flex-shrink: 0;
 }
@@ -300,6 +318,16 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .contributor-card {
+        width: calc(50% - 15px) !important;
+    }
+    
+    .contributor-card:nth-child(4) {
+        margin-left: 0 !important;
+    }
+}
+
 @media (max-width: 768px) {
     .korpus-hero h1 {
         font-size: 36px;
@@ -313,8 +341,13 @@
         height: 300px;
     }
     
-    .contributors-grid {
-        grid-template-columns: 1fr;
+    .contributor-card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .contributor-card:nth-child(4) {
+        margin-left: 0 !important;
     }
 }
 </style>

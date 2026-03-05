@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Maqola, Kitob, Shogird, Video, Fotogalereya, Xotira
+from .models import Maqola, Kitob, Shogird, Video, Fotogalereya, FotogalereyaRasm, Xotira
 
 
 @admin.register(Maqola)
@@ -132,23 +132,48 @@ class VideoAdmin(admin.ModelAdmin):
     )
 
 
+class FotogalereyaRasmInline(admin.StackedInline):
+    """Fotogalereyaga bir nechta rasm qo'shish uchun inline admin"""
+    model = FotogalereyaRasm
+    extra = 1  # Dastlab 1 ta bo'sh maydon ko'rsatish
+    fields = ['image', 'caption', 'order']
+    verbose_name = "Qo'shimcha rasm"
+    verbose_name_plural = "📷 Qo'shimcha rasmlar (bir nechta qo'shish mumkin)"
+    classes = ['collapse']  # Boshlang'ichda yig'ilgan holda
+
+
 @admin.register(Fotogalereya)
 class FotogalereyaAdmin(admin.ModelAdmin):
-    list_display = ['title', 'date', 'views', 'is_featured', 'created_at']
+    list_display = ['title', 'date', 'get_images_count', 'views', 'is_featured', 'created_at']
     list_filter = ['is_featured', 'date', 'created_at']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ['views', 'created_at', 'updated_at']
+    inlines = [FotogalereyaRasmInline]
+    
+    def get_images_count(self, obj):
+        """Rasmlar sonini ko'rsatish"""
+        count = obj.rasmlar.count()
+        if obj.image:
+            count += 1
+        return f"🖼️ {count} ta"
+    get_images_count.short_description = "Rasmlar soni"
     
     fieldsets = (
-        ('Asosiy ma\'lumotlar', {
-            'fields': ('title', 'slug', 'image', 'date')
+        ('📝 Asosiy ma\'lumotlar', {
+            'fields': ('title', 'slug', 'date')
         }),
-        ('Tavsif', {
+        ('🖼️ Asosiy rasm (ixtiyoriy)', {
+            'fields': ('image',),
+            'classes': ('collapse',),
+            'description': 'Asosiy rasm yuklash ixtiyoriy. Quyida qo\'shimcha rasmlar bo\'limida bir nechta rasm qo\'shishingiz mumkin.'
+        }),
+        ('📄 Tavsif', {
             'fields': ('description',)
         }),
-        ('Qo\'shimcha', {
-            'fields': ('is_featured', 'views', 'created_at', 'updated_at')
+        ('⚙️ Qo\'shimcha sozlamalar', {
+            'fields': ('is_featured', 'views', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
         }),
     )
 
